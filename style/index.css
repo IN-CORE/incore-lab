@@ -1,0 +1,22 @@
+.jp-xkcdWidget {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.jp-xkcdCartoon {
+    margin: auto;
+}
+
+.jp-xkcdAttribution {
+    margin: 20px auto;
+}
+
+.jp-searchBox {
+    width: 400px;
+    /*text-align: center;*/
+}
+
+.jp-search {
+    text-align: center;
+}

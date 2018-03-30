@@ -1,10 +1,10 @@
-.jp-xkcdWidget {
+.jp-dataWidget {
     display: flex;
     flex-direction: column;
     overflow: auto;
 }
 
-.jp-xkcdCartoon {
+.jp-text {
     margin: auto;
 }
 

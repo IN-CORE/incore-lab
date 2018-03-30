@@ -1,7 +1,7 @@
 source ~/miniconda/bin/activate jupyterlab-ext
 jupyter lab --watch# jupyterlab_incore
 
-Show a tab that connects with incore2-services and shows a list of available datasets
+Show a tab that connects with incore2-services and shows a list of available datasets, search datasets by title and type.
 
 
 ## Prerequisites

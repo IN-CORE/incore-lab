@@ -35,10 +35,10 @@ class IncoreDataWidget extends Widget {
     constructor() {
         super();
 
-        this.id = 'xkcd-jupyterlab';
+        this.id = 'incore-data-jupyterlab';
         this.title.label = 'Incore Data';
         this.title.closable = true;
-        this.addClass('jp-xkcdWidget');
+        this.addClass('jp-dataWidget');
 
         this.search = document.createElement('div');
         this.search.className ="jp-search";
@@ -56,36 +56,23 @@ class IncoreDataWidget extends Widget {
         this.node.appendChild(this.search);
 
         this.text = document.createElement('div');
-        this.text.className = 'jp-xkcdCartoon';
+        this.text.className = 'jp-text';
         this.text.id='contents-div';
         this.node.appendChild(this.text);
 
-
-
-        this.img = document.createElement('img');
-        this.img.className = 'jp-xkcdCartoon';
-        this.node.appendChild(this.img);
-
-        this.img.insertAdjacentHTML('afterend',
-            `<div class="jp-xkcdAttribution">
-        <a href="https://creativecommons.org/licenses/by-nc/2.5/" class="jp-xkcdAttribution" target="_blank">
-          <img src="https://licensebuttons.net/l/by-nc/2.5/80x15.png" />
-        </a>
-      </div>`
-        );
     }
 
     /**
-     * The image element associated with the widget.
+     * The Div elements to place the text(results) and search criteria
      */
-    readonly img: HTMLImageElement;
-    readonly text: HTMLDivElement;
-    readonly search: HTMLDivElement;
+     text: HTMLDivElement;
+     search: HTMLDivElement;
 
     /**
      * Handle update requests for the widget.
      */
     onUpdateRequest(msg: Message): void {
+        let typesList: string[]= [];
         fetch('http://localhost:8080/data/api/datasets').then(response => {
             return response.json();
         }).then(data => {
@@ -93,30 +80,45 @@ class IncoreDataWidget extends Widget {
             for(i =0; i<data.length; i++ ) {
                 let temp = document.createElement('p');
                 let title = document.createTextNode(data[i].title);
+                typesList.push(data[i].dataType);
                 temp.appendChild(title);
                 this.text.appendChild(temp);
             }
+
+            let select = document.createElement("select");
+            select.onchange= this.onSearchClick;
+            select.id = "type-select";
+            let typesSet = new Set(typesList);
+            typesSet.forEach(x => {
+                let op = new Option();
+                op.value = x;
+                op.text = x;
+                select.options.add(op);
+            });
+            this.search.appendChild(select);
+            console.log("hello");
         });
-    }
+
+    };
 
     onSearchClick(): void {
         const title = (document.getElementById("search-box") as HTMLInputElement).value;
-        fetch('http://localhost:8080/data/api/datasets?title='+ title).then(response => {
+        const type= (document.getElementById('type-select') as HTMLSelectElement).value;
+        fetch('http://localhost:8080/data/api/datasets?title='+ title + '&type=' + encodeURI(type)).then(response => {
             return response.json();
         }).then(data => {
             const text = document.getElementById("contents-div");
             text.innerHTML = "";
             let i;
-            for(i =0; i<data.length; i++ ) {
+            for(i = 0; i< data.length; i++ ) {
                 let temp = document.createElement('p');
                 let title = document.createTextNode(data[i].title);
                 temp.appendChild(title);
                 text.appendChild(temp);
             }
         })
-    }
-};
-
+    };
+}
 
 /**
  * Activate the xckd widget extension.
@@ -163,7 +165,7 @@ function activate(app: JupyterLab, palette: ICommandPalette, restorer: ILayoutRe
         args: () => JSONExt.emptyObject,
         name: () => 'incore_data'
     });
-};
+}
 /**
  * Initialization data for the jupyterlab_incore extension.
  */

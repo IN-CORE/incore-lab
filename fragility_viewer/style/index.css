@@ -1,0 +1,6 @@
+.jp-fragilityWidget {
+    /*display: flex;*/
+    flex-direction: column;
+    overflow: auto;
+    font-size: 12px;
+}

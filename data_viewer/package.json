@@ -26,14 +26,28 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf lib",
+    "prepack": "npm run clean && npm run build",
+    "prettier": "prettier --write '{README,src/*,style/*}{.ts,.tsx,.js,.jsx,.css,.json,.md}'",
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^0.15.0"
+    "@fortawesome/fontawesome": "^1.1.5",
+    "@fortawesome/fontawesome-free-solid": "^5.0.10",
+    "@fortawesome/react-fontawesome": "0.0.18",
+    "@jupyterlab/application": "^0.16.2",
+    "@types/material-ui": "^0.21.1",
+    "@types/react-dom": "^16.0.5",
+    "material-ui": "^0.20.0",
+    "material-ui-pagination": "^1.1.6",
+    "openlayers": "^4.6.5",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-handsontable": "^0.3.1"
   },
   "devDependencies": {
+    "@types/react-tap-event-plugin": "0.0.30",
     "rimraf": "^2.6.1",
-    "typescript": "~2.6.0"
+    "typescript": "2.6.2"
   },
   "jupyterlab": {
     "extension": true

@@ -21,7 +21,7 @@ import ActionSearch from "material-ui/svg-icons/action/search";
 import config from "../app.config";
 import {getHeaderJupyterlab} from "../actions/index";
 import {Map} from "./Map";
-import FileTable from "./fileTable";
+import FileTable from "./FileTable";
 
 export class DataExplorerPage extends React.Component<any, any> {
 

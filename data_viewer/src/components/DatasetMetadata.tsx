@@ -10,11 +10,13 @@ export class DatasetMetadata extends React.Component<any, any> {
     render() {
         let metadataContents;
         if(this.props.dataset != null) {
-            metadataContents = (<div>
-                <b>Title:</b> {this.props.dataset.title} <br/>
-                <b> Description: </b> {this.props.dataset.description} <br/>
-                <b> Creator: </b> {this.props.dataset.creator} <br/>
-                <b> Data Type: </b> {this.props.dataset.dataType}
+
+            metadataContents = (<div style={{fontSize:12}}>
+                <b>Title: </b> {this.props.dataset.title} <br/>
+                <b>Description: </b> {this.props.dataset.description} <br/>
+                <b>Creator: </b> {this.props.dataset.creator} <br/>
+                <b>Data Type: </b> {this.props.dataset.dataType} <br/>
+                <b>Id: </b> {this.props.dataset.id} <br/>
             </div>)
         } else {
             metadataContents = "Please select a dataset to get more information";

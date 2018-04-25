@@ -243,23 +243,23 @@ export class FragilityExplorerPage extends React.Component<any, any>{
                     <ToolbarGroup>
                         {/* Inventory Type */}
                         <SelectField hintText="Inventory Type" value={this.state.selectedInventory}
-                                     onChange={this.handleInventorySelection}>
-                            <MenuItem primaryText="Building" value="building" />
-                            <MenuItem primaryText="Bridge" value="bridge" />
+                                     onChange={this.handleInventorySelection} style={{fontSize:12}}>
+                            <MenuItem primaryText="Building" value="building" style={{fontSize:12}}/>
+                            <MenuItem primaryText="Bridge" value="bridge" style={{fontSize:12}}/>
                             <Divider />
-                            <MenuItem primaryText="Roadway" value="roadway" />
+                            <MenuItem primaryText="Roadway" value="roadway" style={{fontSize:12}}/>
                             {/*<MenuItem primaryText="Railway" value="railway" />*/}
                             <Divider />
-                            <MenuItem primaryText="Electric Power Network" value="electric_facility" />
-                            <MenuItem primaryText="Potable Water Network" value="buried_pipeline" />
+                            <MenuItem primaryText="Electric Power Network" value="electric_facility" style={{fontSize:12}}/>
+                            <MenuItem primaryText="Potable Water Network" value="buried_pipeline" style={{fontSize:12}}/>
                         </SelectField>
 
                         {/* Hazard Type */}
                         <SelectField hintText="Hazard Type" value={this.state.selectedHazard}
-                                     onChange={this.handleHazardSelection}>
-                            <MenuItem primaryText="Earthquake" value="earthquake" />
-                            <MenuItem primaryText="Tornado" value="tornado" />
-                            <MenuItem primaryText="Tsunami" value="tsunami" />
+                                     onChange={this.handleHazardSelection} style={{fontSize:12}}>
+                            <MenuItem primaryText="Earthquake" value="earthquake" style={{fontSize:12}}/>
+                            <MenuItem primaryText="Tornado" value="tornado" style={{fontSize:12}}/>
+                            <MenuItem primaryText="Tsunami" value="tsunami" style={{fontSize:12}}/>
                         </SelectField>
                     </ToolbarGroup>
 
@@ -267,15 +267,15 @@ export class FragilityExplorerPage extends React.Component<any, any>{
                         {/*search box*/}
                         <TextField hintText="Search Fragilities" value={this.state.searchText}
                                    onChange={this.handleTextChange}
-                                   onKeyPress={this.handleKeyPressed} />
+                                   onKeyPress={this.handleKeyPressed} style={{fontSize:12}}/>
                         <IconButton iconStyle={{position: "absolute", left: 0, bottom: 10}}
-                                    onClick={this.searchFragilities}>
+                                    onClick={this.searchFragilities} style={{fontSize:12}}>
                             <ActionSearch />
                         </IconButton>
 
                         {/*download button*/}
                         <RaisedButton primary={true} style={{display: "inline-block"}} label="Export to JSON"
-                                      onClick={this.exportJson} />
+                                      onClick={this.exportJson} labelStyle={{fontSize:12}}/>
                     </ToolbarGroup>
                 </Toolbar>
 

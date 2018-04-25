@@ -3,7 +3,7 @@ import {ListItem, Divider, List} from "material-ui";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faCubes, faChartLine }
     from "@fortawesome/fontawesome-free-solid";
-import Pagination from 'material-ui-pagination';
+import FlatPagination from 'material-ui-flat-pagination'
 
 function getTitle(fragility) {
     let title = fragility.authors.join(", ");
@@ -22,9 +22,16 @@ export default class GroupList extends React.Component<any, any> {
     constructor(props){
         super(props);
         this.state = {
-            page: 1
+            offset:0
         };
 
+    }
+
+    componentWillReceiveProps(nextProps, nextStates){
+        // if search, select from dropdowns; page jump to the first
+        if (this.props.data !== nextProps.data){
+            this.setState({offset: 0});
+        }
     }
 
     render() {
@@ -34,8 +41,7 @@ export default class GroupList extends React.Component<any, any> {
             <div>
                 <List style={{"overflowY": "auto", height: "auto"}}>
                     {
-                        this.props.data.slice((this.state.page -1) * rowsPerPage,
-                            (this.state.page -1) * rowsPerPage + rowsPerPage).map((fragility) => {
+                        this.props.data.slice(this.state.offset, this.state.offset + rowsPerPage).map((fragility) => {
                             // 3d plots
                             if (fragility.is3dPlot) {
                                 return (<div key={fragility.id}>
@@ -61,9 +67,9 @@ export default class GroupList extends React.Component<any, any> {
                         })
                     }
                 </List>
-                <Pagination total={Math.ceil(this.props.data.length / rowsPerPage)}
-                            current={this.state.page}
-                            display={10} onChange={page => this.setState({page})}/>
+                <FlatPagination total={this.props.data.length} offset={this.state.offset}
+                                limit={rowsPerPage} onClick={(e, offset) => this.setState({offset})}
+                                currentPageLabelStyle={{fontSize:12}} otherPageLabelStyle={{fontSize:12}}/>
             </div>
         );
     }

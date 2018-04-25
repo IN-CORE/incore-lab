@@ -14,7 +14,9 @@ import { GridList,
     Checkbox
 } from "material-ui";
 import {Dataset} from "../utils/flowtype";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import ActionAppGet from 'material-ui/svg-icons/action/get-app';
 import ActionSearch from "material-ui/svg-icons/action/search";
 
 // application configuration
@@ -227,8 +229,9 @@ export class DataExplorerPage extends React.Component<any, any> {
 
     }
 
-    handleNewDatasetTypeRequest() {
-        this.setState({datasetTypeSearchText: ''})
+    handleNewDatasetTypeRequest(event) {
+        event.preventDefault();
+        this.setState({datasetTypeSearchText: ''});
     }
 
     async updateCheckCreatorFilter() {
@@ -274,8 +277,7 @@ export class DataExplorerPage extends React.Component<any, any> {
                     <Map datasetId={this.state.selectedDatasetId}/>
                 </div>);
         } else if(this.state.fileExtension === "csv"){
-            right_column = <FileTable container="data_container" data={this.state.fileData.slice(2, 12)}
-                                       colHeaders={this.state.fileData[0]} rowHeaders={false} height={275}/>;
+            right_column = <FileTable data={this.state.fileData.slice(2, 12)} colHeaders={this.state.fileData.slice(0,1)}/>;
         } else if (this.state.fileExtension === "xml"){
             right_column = <pre style={{ maxHeight: 200, overflow: 'auto' }}> {this.state.fileData}</pre>;
         } else if (this.state.fileExtension === "txt") {
@@ -283,47 +285,67 @@ export class DataExplorerPage extends React.Component<any, any> {
         }
 
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider muiTheme={getMuiTheme({})}>
                 <div>
                 <Toolbar style={{backgroundColor:"white"}}>
                     {/* dataset type */}
-                    <ToolbarGroup style={{width:450}}>
-                        <AutoComplete
-                            hintText = "Dataset Type"
-                            searchText={this.state.datasetTypeSearchText}
-                            onUpdateInput={this.handleUpdateDatasetTypeInput}
-                            onNewRequest ={this.handleNewDatasetTypeRequest}
-                            dataSource={this.state.dataTypes}
-                            filter={(searchText, key) => key.indexOf(searchText) !== -1}
-                            openOnFocus={true}
-                            fullWidth={true}
-                            listStyle={{ maxHeight: 200, overflow: 'auto' }}
-                            />
-                    </ToolbarGroup>
-
-                    <ToolbarGroup>
-                        {/* search dataset by title */}
-                        <TextField hintText="Search Datasets" value={this.state.searchText}
-                                   onChange={this.handleTextChange}
-                                   onKeyPress={this.handleKeyPressed} />
-                        <IconButton iconStyle={{position: "absolute", left: 0, bottom: 10}}
-                                    onClick={this.searchDatasets}>
-                            <ActionSearch />
-                        </IconButton>
-                        <Checkbox
-                            label="Show only my datasets"
-                            checked={this.state.checkedCreatorFilter}
-                            onCheck={this.updateCheckCreatorFilter}
-                            style={{marginBottom: 16}}
-                        />
-                        <RaisedButton primary={false} style={{display: "inline-block"}} label="Download Metadata"
-                                      onClick={this.exportJson}/>
-                        <RaisedButton primary={true} style={{display: "inline-block"}} label="Download Dataset"
-                                      onClick={this.downloadDataset}/>
-                    </ToolbarGroup>
+                    <GridList cols={12}>
+                        <GridTile cols={4}>
+                            <ToolbarGroup>
+                                <AutoComplete
+                                    hintText = "Dataset Type"
+                                    searchText={this.state.datasetTypeSearchText}
+                                    onUpdateInput={this.handleUpdateDatasetTypeInput}
+                                    onNewRequest ={this.handleNewDatasetTypeRequest}
+                                    dataSource={this.state.dataTypes}
+                                    filter={(searchText, key) => key.indexOf(searchText) !== -1}
+                                    openOnFocus={true}
+                                    fullWidth={true}
+                                    listStyle={{ maxHeight: 200, overflow: 'auto', fontSize:12}}
+                                    textFieldStyle={{fontSize:12}}
+                                    style={{width:450}}
+                                    />
+                            </ToolbarGroup>
+                        </GridTile>
+                        <GridTile cols={3}>
+                            <ToolbarGroup>
+                                {/* search dataset by title */}
+                                <TextField hintText="Search Datasets" value={this.state.searchText}
+                                           onChange={this.handleTextChange}
+                                           onKeyPress={this.handleKeyPressed}
+                                           style={{fontSize:12, marginLeft:30, width:400}}/>
+                                <IconButton iconStyle={{position: "absolute", left: 0, bottom: 10}}
+                                            onClick={this.searchDatasets} style={{fontSize:12}}>
+                                    <ActionSearch />
+                                </IconButton>
+                            </ToolbarGroup>
+                        </GridTile>
+                        <GridTile cols={5}>
+                            <ToolbarGroup>
+                                <Checkbox
+                                    label="Show only my datasets"
+                                    checked={this.state.checkedCreatorFilter}
+                                    onCheck={this.updateCheckCreatorFilter}
+                                    style={{fontSize:12, marginLeft:50, marginRight:-30, width:200}}
+                                />
+                                <RaisedButton primary={false} style={{display: "inline-block"}}
+                                              label="Metadata"
+                                              labelPosition="before"
+                                              onClick={this.exportJson}
+                                              labelStyle={{fontSize:12}}
+                                              icon={<ActionAppGet/>}/>
+                                <RaisedButton primary={true} style={{display: "inline-block"}}
+                                              label="Dataset"
+                                              labelPosition="before"
+                                              onClick={this.downloadDataset}
+                                              labelStyle={{fontSize:12}}
+                                              icon={<ActionAppGet/>}/>
+                            </ToolbarGroup>
+                        </GridTile>
+                    </GridList>
                 </Toolbar>
 
-                <GridList cols={12} padding={10} style={{padding: "20px"}} cellHeight="auto">
+                <GridList cols={12} padding={10} style={{padding: "0px 20px 0px 20px"}} cellHeight="auto">
                     {/* data list */}
                     <GridTile cols={4}>
                         <GroupList id="datasets-list" onClick={this.clickDataset} height="400px"

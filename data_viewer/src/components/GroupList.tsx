@@ -3,27 +3,32 @@ import {ListItem, Divider, List} from "material-ui";
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faTable, faFileAlt, faMap, faExchangeAlt, faChartArea, faShareAlt, faQuestionCircle }
     from "@fortawesome/fontawesome-free-solid";
-import Pagination from 'material-ui-pagination';
+import FlatPagination from 'material-ui-flat-pagination'
 
 export default class GroupList extends React.Component<any, any> {
 
     constructor(props){
         super(props);
         this.state = {
-            page: 1
+            offset: 0
         };
 
     }
 
+    componentWillReceiveProps(nextProps, nextStates){
+        // if search, select from dropdowns; page jump to the first
+        if (this.props.data !== nextProps.data){
+            this.setState({offset: 0});
+        }
+    }
+
     render() {
         let rowsPerPage = 5;
-
         return (
             <div>
                 <List style={{"overflowY": "auto", height: "auto"}}>
                     {
-                        this.props.data.slice((this.state.page -1) * rowsPerPage,
-                            (this.state.page -1) * rowsPerPage + rowsPerPage).map((dataset) => {
+                        this.props.data.slice(this.state.offset, this.state.offset + rowsPerPage).map((dataset) => {
 
                             if (dataset.format === 'table') {
                                 return (<div key={dataset.id}>
@@ -98,8 +103,9 @@ export default class GroupList extends React.Component<any, any> {
                         })
                     }
                 </List>
-                <Pagination total={Math.ceil(this.props.data.length / rowsPerPage)} current={this.state.page}
-                            display={10} onChange={page => this.setState({page})}/>
+                <FlatPagination total={this.props.data.length} offset={this.state.offset}
+                            limit={rowsPerPage} onClick={(e, offset) => this.setState({offset})}
+                                currentPageLabelStyle={{fontSize:12}} otherPageLabelStyle={{fontSize:12}}/>
             </div>
         );
     }

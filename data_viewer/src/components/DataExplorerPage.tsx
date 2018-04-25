@@ -135,7 +135,8 @@ export class DataExplorerPage extends React.Component<any, any> {
     async clickDataset(dataset) {
         this.setState({dataset: dataset, selectedDatasetId: dataset.id, selectedDatasetFormat: dataset.format,
             selectedDatasetFileDescriptors: dataset.fileDescriptors, fileData: []});
-        if(dataset.fileDescriptors[0].filename.split(".").slice(-1).pop() === "csv") {
+        const fileExtension = dataset.fileDescriptors[0].filename.split(".").slice(-1).pop();
+        if( fileExtension === "csv" || fileExtension === "xml") {
             await this.onClickFileDescriptor(dataset.id, dataset.fileDescriptors[0].id, dataset.fileDescriptors[0].filename)
         }
 
@@ -169,6 +170,9 @@ export class DataExplorerPage extends React.Component<any, any> {
                 });
 
                 this.setState({fileData: filedData});
+            } else if(this.state.fileExtension === "xml") {
+                // For some reason the first 3 characters are weird on xml files.
+                this.setState({fileData: text.substring(3)});
             }
         }
 
@@ -271,7 +275,7 @@ export class DataExplorerPage extends React.Component<any, any> {
             right_column = <FileTable container="data_container" data={this.state.fileData.slice(2, 12)}
                                        colHeaders={this.state.fileData[0]} rowHeaders={false} height={275}/>;
         } else if (this.state.fileExtension === "xml"){
-            console.log("xml file do something else");
+            right_column = <pre> {this.state.fileData}</pre>;
         }
 
         return (

@@ -8,9 +8,6 @@ class CustomExpressionTable extends React.Component<any, any> {
 		super(props);
 	}
 
-	componentDidMount() {
-	}
-
 	render() {
 		return (
 			<Table style={{backgroundColor:"transparent", tableLayout: 'auto'}}>
@@ -29,7 +26,7 @@ class CustomExpressionTable extends React.Component<any, any> {
 				<TableBody displayRowCheckbox={false}>
 					{this.props.fragility.fragilityCurves.map(function (curve) {
 						return (
-							<TableRow>
+							<TableRow key={curve.className}>
 								<TableRowColumn>{curve.description}</TableRowColumn>
 								<TableRowColumn>{curve.expression}</TableRowColumn>
 							</TableRow>
@@ -40,9 +37,6 @@ class CustomExpressionTable extends React.Component<any, any> {
 		);
 	}
 
-	componentWillUnmount() {
-
-	}
 }
 
 

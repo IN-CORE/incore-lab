@@ -137,7 +137,7 @@ export class DataExplorerPage extends React.Component<any, any> {
     async clickDataset(dataset) {
         this.setState({dataset: dataset, selectedDatasetId: dataset.id, selectedDatasetFormat: dataset.format,
             selectedDatasetFileDescriptors: dataset.fileDescriptors, fileData: []});
-        const fileExtension = dataset.fileDescriptors[0].filename.split(".").slice(-1).pop();
+        const fileExtension = dataset.fileDescriptors[0].filename.split(".").slice(-1).pop().toLowerCase();
         if( fileExtension === "csv" || fileExtension === "xml") {
             await this.onClickFileDescriptor(dataset.id, dataset.fileDescriptors[0].id, dataset.fileDescriptors[0].filename)
         }
@@ -164,7 +164,7 @@ export class DataExplorerPage extends React.Component<any, any> {
             let text = await response.text();
 
             // parse the data
-            this.setState({fileExtension: file_name.split(".").slice(-1).pop()});
+            this.setState({fileExtension: file_name.split(".").slice(-1).pop().toLowerCase()});
             if(this.state.fileExtension === "csv") {
                 let filedData = [];
                 await text.split("\n").map(row => {
@@ -279,9 +279,9 @@ export class DataExplorerPage extends React.Component<any, any> {
         } else if(this.state.fileExtension === "csv"){
             right_column = <FileTable data={this.state.fileData.slice(2, 12)} colHeaders={this.state.fileData.slice(0,1)}/>;
         } else if (this.state.fileExtension === "xml"){
-            right_column = <pre style={{ maxHeight: 200, overflow: 'auto' }}> {this.state.fileData}</pre>;
+            right_column = <pre style={{ maxHeight: 298, overflow: 'auto' }}> {this.state.fileData}</pre>;
         } else if (this.state.fileExtension === "txt") {
-            right_column = <div style={{ maxHeight: 200, overflow: 'auto' }}>{this.state.fileData}</div>
+            right_column = <div style={{ maxHeight: 298, overflow: 'auto' }}>{this.state.fileData}</div>
         }
 
         return (

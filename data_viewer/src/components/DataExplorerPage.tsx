@@ -2,8 +2,6 @@ import * as React from "react";
 import GroupList from "./GroupList";
 import { GridList,
     GridTile,
-    MenuItem,
-    SelectField,
     TextField,
     IconButton,
     RaisedButton,
@@ -11,7 +9,8 @@ import { GridList,
     List,
     Divider,
     Toolbar,
-    ToolbarGroup
+    ToolbarGroup,
+    AutoComplete
 } from "material-ui";
 import {Dataset} from "../utils/flowtype";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -22,6 +21,8 @@ import config from "../app.config";
 import {getHeaderJupyterlab} from "../actions/index";
 import {Map} from "./Map";
 import FileTable from "./FileTable";
+import {DatasetMetadata} from "./DatasetMetadata";
+
 
 export class DataExplorerPage extends React.Component<any, any> {
 
@@ -38,6 +39,7 @@ export class DataExplorerPage extends React.Component<any, any> {
             selectedDatasetFileDescriptors:[],
             fileExtension:'',
             fileData: [],
+            datasetTypeSearchText: ''
         };
 
         this.handleTextChange = this.handleTextChange.bind(this);
@@ -48,6 +50,8 @@ export class DataExplorerPage extends React.Component<any, any> {
         this.downloadDataset = this.downloadDataset.bind(this);
         this.exportJson = this.exportJson.bind(this);
         this.onClickFileDescriptor = this.onClickFileDescriptor.bind(this);
+        this.handleUpdateDatasetTypeInput = this.handleUpdateDatasetTypeInput.bind(this);
+        this.handleNewDatasetTypeRequest = this.handleNewDatasetTypeRequest.bind(this);
     }
 
     handleTextChange(event: any){
@@ -78,7 +82,7 @@ export class DataExplorerPage extends React.Component<any, any> {
                 await this.clickDataset(datasets);
             }
 
-            this.setState({datasets: datasets, dataTypes: typesList})
+            this.setState({datasets: datasets, dataTypes: typesList.sort()})
         } else {
             this.setState({datasets: [], dataTypes: [], dataset: null})
         }
@@ -108,7 +112,7 @@ export class DataExplorerPage extends React.Component<any, any> {
             if(datasets.length > 0) {
                 this.setState({datasets: datasets});
                 this.clickDataset(datasets[0]);
-            }else {
+            } else {
                 this.setState({datasets: datasets});
             }
         } else {
@@ -116,9 +120,13 @@ export class DataExplorerPage extends React.Component<any, any> {
         }
     }
 
-    clickDataset(dataset) {
+    async clickDataset(dataset) {
         this.setState({dataset: dataset, selectedDatasetId: dataset.id, selectedDatasetFormat: dataset.format,
             selectedDatasetFileDescriptors: dataset.fileDescriptors, fileData: []});
+        if(dataset.fileDescriptors[0].filename.split(".").slice(-1).pop() === "csv") {
+            await this.onClickFileDescriptor(dataset.id, dataset.fileDescriptors[0].id, dataset.fileDescriptors[0].filename)
+        }
+
     }
 
     async handleSelectDataType(event, index, value) {
@@ -146,11 +154,11 @@ export class DataExplorerPage extends React.Component<any, any> {
                 let filedData = [];
                 await text.split("\n").map(row => {
                     filedData.push(row.split(','));
-                })
+                });
 
                 this.setState({fileData: filedData});
             }
-        };
+        }
 
     }
 
@@ -195,10 +203,17 @@ export class DataExplorerPage extends React.Component<any, any> {
         }
     }
 
+    async handleUpdateDatasetTypeInput(searchText) {
+        await this.setState({datasetTypeSearchText: searchText, selectedDataType: searchText});
+        await this.searchDatasets();
+
+    }
+
+    handleNewDatasetTypeRequest() {
+        this.setState({datasetTypeSearchText: ''})
+    }
+
     render() {
-        let datasetTypes = this.state.dataTypes.map(dataType => {
-           return <MenuItem primaryText={dataType} value={dataType} />
-        });
 
         let file_descriptors = this.state.selectedDatasetFileDescriptors.map(file_descriptor => {
             return (<div key={file_descriptor.id}>
@@ -210,13 +225,20 @@ export class DataExplorerPage extends React.Component<any, any> {
                     </div>);
         });
 
-        let file_contents;
-        if(this.state.fileExtension === "csv"){
-            file_contents = <FileTable container="data_container" data={this.state.fileData.slice(2, 12)}
-                                       colHeaders={this.state.fileData[0]} rowHeaders={false} height={275}/>;
-        }else if (this.state.fileExtension === "xml"){
-            console.log("xml file do something else");
+        let file_list;
+        if( this.state.selectedDatasetFormat !== "shapefile" && this.state.selectedDatasetFormat !== "Network") {
+            file_list = (
+                <List style={{"overflowY": "auto"}}>
+                    {file_descriptors}
+                </List>
+            )
         }
+        const  middle_column = (
+            <div>
+                <DatasetMetadata dataset={this.state.dataset}/>
+                {file_list}
+            </div>
+        );
 
         let right_column;
         if(this.state.selectedDatasetFormat === "shapefile" || this.state.selectedDatasetFormat === "Network") {
@@ -224,24 +246,30 @@ export class DataExplorerPage extends React.Component<any, any> {
                 (<div>
                     <Map datasetId={this.state.selectedDatasetId}/>
                 </div>);
-        }
-        else{
-            right_column = (<div>
-                <List style={{"overflowY": "auto"}}>
-                    {file_descriptors}
-                </List>
-            </div>);
+        } else if(this.state.fileExtension === "csv"){
+            right_column = <FileTable container="data_container" data={this.state.fileData.slice(2, 12)}
+                                       colHeaders={this.state.fileData[0]} rowHeaders={false} height={275}/>;
+        } else if (this.state.fileExtension === "xml"){
+            console.log("xml file do something else");
         }
 
         return (
             <MuiThemeProvider>
+                <div>
                 <Toolbar style={{backgroundColor:"white"}}>
                     {/* dataset type */}
-                    <ToolbarGroup>
-                        <SelectField hintText="Dataset Type" value={this.state.selectedDataType}
-                                     onChange={this.handleSelectDataType} style={{width:300}}>
-                            {datasetTypes}
-                        </SelectField>
+                    <ToolbarGroup style={{width:450}}>
+                        <AutoComplete
+                            hintText = "Dataset Type"
+                            searchText={this.state.datasetTypeSearchText}
+                            onUpdateInput={this.handleUpdateDatasetTypeInput}
+                            onNewRequest ={this.handleNewDatasetTypeRequest}
+                            dataSource={this.state.dataTypes}
+                            filter={(searchText, key) => key.indexOf(searchText) !== -1}
+                            openOnFocus={true}
+                            fullWidth={true}
+                            listStyle={{ maxHeight: 200, overflow: 'auto' }}
+                            />
                     </ToolbarGroup>
 
                     <ToolbarGroup>
@@ -269,13 +297,14 @@ export class DataExplorerPage extends React.Component<any, any> {
                     </GridTile>
 
                     {/* rendering data */}
-                    <GridTile cols={4}>
+                    <GridTile cols={3}>
+                        {middle_column}
+                    </GridTile>
+                    <GridTile cols={5}>
                         {right_column}
                     </GridTile>
-                    <GridTile cols={4}>
-                        {file_contents}
-                    </GridTile>
                 </GridList>
+                </div>
             </MuiThemeProvider>
         )
     }

@@ -17,11 +17,4 @@ export default class FileTable extends React.Component<any, any> {
 			</div>
 		)
 	}
-
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-
-    }
 }

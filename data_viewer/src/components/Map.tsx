@@ -110,8 +110,8 @@ export class Map extends React.Component<any, any>{
 
 		const view = new ol.View({
 			projection: projection,
-			center:  [-90.07376669874641, 35.03298062856903],
-			zoom: 10,
+			center:  [-89.920335, 35.293580],
+			zoom: 9.5,
 			minZoom: 5.5,
 			maxZoom: 12
 		});

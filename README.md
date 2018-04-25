@@ -62,7 +62,7 @@ jupyter labextension link .
 
 6. Jupyterlab is a React based app, and its modules comes with React types. This will result in conflicts in you are trying
    to install any React based extensions. To solve this conflict, just make sure you have *removed the @types folder* under
-   the path ```node_modules/@jupyterlab/apputils/node_modules/``` In both the data_viewe and fragility_viewer folders
+   the path ```node_modules/@jupyterlab/apputils/node_modules/``` In both the data_viewer and fragility_viewer folders
 
 
 7. Run these commands to activate the jupyterlab-ext environment and to start a JupyterLab instance in watch mode so that it will keep up with our changes as we make them.

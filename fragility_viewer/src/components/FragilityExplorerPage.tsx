@@ -238,6 +238,7 @@ export class FragilityExplorerPage extends React.Component<any, any>{
     render() {
         return (
             <MuiThemeProvider>
+                <div>
                 <Toolbar style={{backgroundColor:"white"}}>
                     <ToolbarGroup>
                         {/* Inventory Type */}
@@ -318,6 +319,7 @@ export class FragilityExplorerPage extends React.Component<any, any>{
                         }
 
                     </GridList>
+                </div>
                 </div>
             </MuiThemeProvider>
         );

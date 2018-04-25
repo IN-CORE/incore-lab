@@ -279,9 +279,9 @@ export class DataExplorerPage extends React.Component<any, any> {
         } else if(this.state.fileExtension === "csv"){
             right_column = <FileTable data={this.state.fileData.slice(2, 12)} colHeaders={this.state.fileData.slice(0,1)}/>;
         } else if (this.state.fileExtension === "xml"){
-            right_column = <pre style={{ maxHeight: 298, overflow: 'auto' }}> {this.state.fileData}</pre>;
+            right_column = <pre style={{ maxHeight: 298, overflow: 'auto', fontSize: 12 }}> {this.state.fileData}</pre>;
         } else if (this.state.fileExtension === "txt") {
-            right_column = <div style={{ maxHeight: 298, overflow: 'auto' }}>{this.state.fileData}</div>
+            right_column = <div style={{ maxHeight: 298, overflow: 'auto', fontSize: 12 }}>{this.state.fileData}</div>
         }
 
         return (

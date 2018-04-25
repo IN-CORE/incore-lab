@@ -345,7 +345,7 @@ export class DataExplorerPage extends React.Component<any, any> {
                     </GridList>
                 </Toolbar>
 
-                <GridList cols={12} padding={10} style={{padding: "0px 20px 0px 20px"}} cellHeight="auto">
+                <GridList cols={12} padding={20} style={{padding: "0px 20px 0px 20px"}} cellHeight="auto">
                     {/* data list */}
                     <GridTile cols={4}>
                         <GroupList id="datasets-list" onClick={this.clickDataset} height="400px"

@@ -255,7 +255,7 @@ export async function getHeaderJupyterlab() {
     return headers;
 }
 
-function getUsername(){
+export function getUsername(){
 	return new Promise<string>((resolve) => {
         let contents = new ContentsManager();
         contents.get('.user').then((model) => {

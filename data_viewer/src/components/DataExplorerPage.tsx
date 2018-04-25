@@ -10,7 +10,8 @@ import { GridList,
     Divider,
     Toolbar,
     ToolbarGroup,
-    AutoComplete
+    AutoComplete,
+    Checkbox
 } from "material-ui";
 import {Dataset} from "../utils/flowtype";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -18,7 +19,7 @@ import ActionSearch from "material-ui/svg-icons/action/search";
 
 // application configuration
 import config from "../app.config";
-import {getHeaderJupyterlab} from "../actions/index";
+import {getHeaderJupyterlab, getUsername} from "../actions/index";
 import {Map} from "./Map";
 import FileTable from "./FileTable";
 import {DatasetMetadata} from "./DatasetMetadata";
@@ -39,7 +40,8 @@ export class DataExplorerPage extends React.Component<any, any> {
             selectedDatasetFileDescriptors:[],
             fileExtension:'',
             fileData: [],
-            datasetTypeSearchText: ''
+            datasetTypeSearchText: '',
+            checkedCreatorFilter: false
         };
 
         this.handleTextChange = this.handleTextChange.bind(this);
@@ -52,6 +54,7 @@ export class DataExplorerPage extends React.Component<any, any> {
         this.onClickFileDescriptor = this.onClickFileDescriptor.bind(this);
         this.handleUpdateDatasetTypeInput = this.handleUpdateDatasetTypeInput.bind(this);
         this.handleNewDatasetTypeRequest = this.handleNewDatasetTypeRequest.bind(this);
+        this.updateCheckCreatorFilter = this.updateCheckCreatorFilter.bind(this);
     }
 
     handleTextChange(event: any){
@@ -91,16 +94,25 @@ export class DataExplorerPage extends React.Component<any, any> {
 
     async searchDatasets() {
         const host = config.dataService;
-        let url = '';
-
-        if(this.state.selectedDataType != null && this.state.searchText != '') {
-            url = host+"?title="+this.state.searchText+"&type="+encodeURI(this.state.selectedDataType);
-        } else if(this.state.selectedDataType != null) {
-            url = host+"?type="+encodeURI(this.state.selectedDataType);
-        } else if(this.state.searchText != '') {
-            url = host + "?title=" + this.state.searchText
-        } else {
-            url = host
+        const username = await getUsername();
+        let url = host + "?";
+        let needDivider = false;
+        if(this.state.selectedDataType != null) {
+            url += "type=" + encodeURI(this.state.selectedDataType);
+            needDivider = true;
+        }
+        if(this.state.searchText != '') {
+            if(needDivider) {
+                url += "&"
+            }
+            url += "title="+this.state.searchText;
+            needDivider=true;
+        }
+        if(this.state.checkedCreatorFilter) {
+            if(needDivider) {
+                url +="&"
+            }
+            url += "creator="+username.trim();
         }
 
         let response =  await fetch(url, {method: "GET", mode: "cors", headers: await getHeaderJupyterlab()});
@@ -213,6 +225,15 @@ export class DataExplorerPage extends React.Component<any, any> {
         this.setState({datasetTypeSearchText: ''})
     }
 
+    async updateCheckCreatorFilter() {
+        this.setState((oldState) => {
+            return {
+                checkedCreatorFilter: !oldState.checkedCreatorFilter
+            }
+        });
+        await this.searchDatasets();
+    }
+
     render() {
 
         let file_descriptors = this.state.selectedDatasetFileDescriptors.map(file_descriptor => {
@@ -281,7 +302,12 @@ export class DataExplorerPage extends React.Component<any, any> {
                                     onClick={this.searchDatasets}>
                             <ActionSearch />
                         </IconButton>
-
+                        <Checkbox
+                            label="Show only my datasets"
+                            checked={this.state.checkedCreatorFilter}
+                            onCheck={this.updateCheckCreatorFilter}
+                            style={{marginBottom: 16}}
+                        />
                         <RaisedButton primary={false} style={{display: "inline-block"}} label="Download Metadata"
                                       onClick={this.exportJson}/>
                         <RaisedButton primary={true} style={{display: "inline-block"}} label="Download Dataset"

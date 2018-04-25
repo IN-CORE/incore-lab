@@ -8,9 +8,6 @@ class CustomExpressionTable extends React.Component<any, any> {
 		super(props);
 	}
 
-	componentDidMount() {
-	}
-
 	render() {
         let bodyGranularStyle = {fontSize:12, color:"black", height:30, textAlign:"center"};
         let rowStyle = {height:30};
@@ -29,7 +26,7 @@ class CustomExpressionTable extends React.Component<any, any> {
                     </TableRow>
 					{this.props.fragility.fragilityCurves.map(function (curve) {
 						return (
-							<TableRow style={rowStyle}>
+							<TableRow style={rowStyle} key={curve.className}>
 								<TableRowColumn style={bodyGranularStyle}>{curve.description}</TableRowColumn>
 								<TableRowColumn style={bodyGranularStyle}>{curve.expression}</TableRowColumn>
 							</TableRow>
@@ -40,8 +37,6 @@ class CustomExpressionTable extends React.Component<any, any> {
 		)
 	}
 
-	componentWillUnmount() {
-	}
 }
 
 

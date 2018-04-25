@@ -11,7 +11,7 @@ export class DatasetMetadata extends React.Component<any, any> {
         let metadataContents;
         if(this.props.dataset != null) {
 
-            metadataContents = (<div style={{fontSize:12}}>
+            metadataContents = (<div style={{fontSize:12, marginLeft: 20}}>
                 <b>Title: </b> {this.props.dataset.title} <br/>
                 <b>Description: </b> {this.props.dataset.description} <br/>
                 <b>Creator: </b> {this.props.dataset.creator} <br/>

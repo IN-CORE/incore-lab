@@ -173,6 +173,8 @@ export class DataExplorerPage extends React.Component<any, any> {
             } else if(this.state.fileExtension === "xml") {
                 // For some reason the first 3 characters are weird on xml files.
                 this.setState({fileData: text.substring(3)});
+            } else if (this.state.fileExtension === "txt") {
+                this.setState({fileData: text});
             }
         }
 
@@ -275,7 +277,9 @@ export class DataExplorerPage extends React.Component<any, any> {
             right_column = <FileTable container="data_container" data={this.state.fileData.slice(2, 12)}
                                        colHeaders={this.state.fileData[0]} rowHeaders={false} height={275}/>;
         } else if (this.state.fileExtension === "xml"){
-            right_column = <pre> {this.state.fileData}</pre>;
+            right_column = <pre style={{ maxHeight: 200, overflow: 'auto' }}> {this.state.fileData}</pre>;
+        } else if (this.state.fileExtension === "txt") {
+            right_column = <div style={{ maxHeight: 200, overflow: 'auto' }}>{this.state.fileData}</div>
         }
 
         return (

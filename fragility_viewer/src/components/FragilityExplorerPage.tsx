@@ -32,7 +32,7 @@ import DistributionTable from "./DistributionTable";
 import CustomExpressionTable from "./CustomExpressionTable";
 
 // helper
-//import {getHeaderJupyterlab} from "../actions";
+import {getHeaderJupyterlab} from "../actions";
 
 export class FragilityExplorerPage extends React.Component<any, any>{
     static propTypes = {};
@@ -69,8 +69,9 @@ export class FragilityExplorerPage extends React.Component<any, any>{
         let host = config.fragilityService;
         let url = host;
 
-        //let response = await fetch(url, {method: "GET", mode: "cors", headers: await getHeaderJupyterlab()});
-        let response = await fetch(url, {method: "GET", mode: "cors", headers: {}});
+        let headers = await getHeaderJupyterlab();
+        let response = await fetch(url, {method: "GET", mode: "cors", headers: headers});
+        //let response = await fetch(url, {method: "GET", mode: "cors", headers: {}});
 
         if (response.ok) {
             let fragilities = await response.json();
@@ -138,8 +139,9 @@ export class FragilityExplorerPage extends React.Component<any, any>{
 
         let url = `${host}/search?text=${searchText}`;
 
-        //let response = await fetch(url, {method: "GET", mode: "cors", headers: await getHeaderJupyterlab()});
-        let response = await fetch(url, {method: "GET", mode: "cors", headers:{}});
+        let headers = await getHeaderJupyterlab();
+        let response = await fetch(url, {method: "GET", mode: "cors", headers: headers});
+        //let response = await fetch(url, {method: "GET", mode: "cors", headers:{}});
 
         if (response.ok) {
             let fragilities = await response.json();
@@ -192,9 +194,10 @@ export class FragilityExplorerPage extends React.Component<any, any>{
         } else {
             url = `${host}`;
         }
+        let headers = await getHeaderJupyterlab();
 
-        //let response = await fetch(url, {method: "GET", mode: "cors", headers: await getHeaderJupyterlab()});
-        let response = await fetch(url, {method: "GET", mode: "cors", headers: {}});
+        let response = await fetch(url, {method: "GET", mode: "cors", headers: headers});
+        //let response = await fetch(url, {method: "GET", mode: "cors", headers: {}});
 
         if (response.ok) {
             let fragilities = await response.json();

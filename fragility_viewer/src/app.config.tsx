@@ -10,7 +10,7 @@ const devConfig = {
     dataWolf: "http://incore2-services.ncsa.illinois.edu:8888/datawolf/"
 };
 
-const prodConfig = {
+/*const prodConfig = {
     basePath: "/",
     fragilityService: "https://incore2-services.ncsa.illinois.edu/fragility/api/fragilities",
     semanticService: "",
@@ -20,13 +20,13 @@ const prodConfig = {
     dataServiceBase: "https://incore2-services.ncsa.illinois.edu/",
     dataService: "https://incore2-services.ncsa.illinois.edu/data/api/datasets",
     dataWolf: "https://incore2-datawolf.ncsa.illinois.edu/datawolf/"
-};
+};*/
 
 const config = getConfig();
 
 function getConfig() {
     if (process.env.NODE_ENV === "production") {
-        return prodConfig;
+        return devConfig;
     } else {
         return devConfig;
     }

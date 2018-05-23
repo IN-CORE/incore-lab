@@ -246,22 +246,34 @@ export function getHeader() {
     return headers;
 }
 
+function getHeaders(){
+	return new Promise<object>((resolve) =>{
+		let contents = new ContentsManager();
+		contents.get('user.json').then((model)=>{
+			resolve(JSON.parse(model.content));
+		})
+	})
+}
+
 export async function getHeaderJupyterlab() {
-	const username = await getUsername();
-	const headers = new Headers({
-       "X-Credential-Username":username
+
+    const info = await getHeaders();
+    const headers = new Headers({
+        "Authorization": info['Authorization'],
+        "auth-user": info['auth-user'],
+        "auth-token": info['auth-token']
     });
 
     return headers;
 }
 
 export function getUsername(){
-	return new Promise<string>((resolve) => {
+    return new Promise<string>((resolve) =>{
         let contents = new ContentsManager();
-        contents.get('.user').then((model) => {
-                resolve(model.content);
-            });
-    	});
+        contents.get('user.json').then((model)=>{
+            resolve(JSON.parse(model.content)['auth-user']);
+        })
+    })
 }
 
 function getDatawolfHeader() {

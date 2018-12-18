@@ -4,3 +4,7 @@
     overflow: auto;
     font-size: 12px;
 }
+
+.jp-IncoreIcon {
+    background-image: url("resilience-logo.png");
+}

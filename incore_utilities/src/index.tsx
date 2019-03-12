@@ -157,19 +157,19 @@ const extension: JupyterLabPlugin<void> = {
 export const menuItem = [
     {
         name: 'Fragility Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/FragilityViewer',
+        url: 'https://incore2.ncsa.illinois.edu/incore/FragilityViewer',
         description:'fragility explorer standalone app',
         target: 'widget'
     },
     {
         name: 'Data Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/DataViewer',
+        url: 'https://incore2.ncsa.illinois.edu/incore/DataViewer',
         description:'data explorer standalone app',
         target: 'widget'
     },
     {
         name: 'Hazard Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/HazardViewer',
+        url: 'https://incore2.ncsa.illinois.edu/incore/HazardViewer',
         description:'hazard explorer standalone app',
         target: 'widget'
     }

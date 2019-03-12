@@ -25,10 +25,9 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
     /* add menus */
     function appendNewCommand(item: any){
         let iframe: IFrame = null;
-        let command = `Menu-${item.name}: show`;
+        let command = `${item.name}: show`;
         app.commands.addCommand(command, {
             label: item.name,
-            iconClass: 'jp-IncoreIcon',
             execute: () =>{
                 if (item.target == '_blank'){
                     let win = window.open(item.url + "?" + queryString, '_blank');
@@ -60,9 +59,14 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
 
     // if user.json exists, queryString will be ?&user=xxx&auth-token=xxxx; else queryString is empty
     let queryString = await appendCredentials();
-    if (queryString !== "") menuItem.forEach(item => appendNewCommand(item));
+    if (queryString !== ""){
+        menuItem.forEach(item => appendNewCommand(item));
+    }
+
+    docItem.forEach(item => appendNewCommand(item));
 
     let menu = Private.createMenu(app);
+    let doc = Private.createDoc(app);
 
     /* add login widget */
     let LoginWidget: IncoreLoginWidget;
@@ -71,7 +75,6 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
     app.commands.addCommand(commandLogin, {
         label: 'INCORE login',
         caption:'INCORE login',
-        iconClass: 'jp-IncoreIcon',
         execute: () => {
             if (!LoginWidget) {
                 LoginWidget = new IncoreLoginWidget();
@@ -100,6 +103,7 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
     // Add the login to the menu and then add menu to mainMenu
     menu.addItem({command: commandLogin});
     mainMenu.addMenu(menu, {rank:0});
+    mainMenu.addMenu(doc, {rank:0});
 
     /* Track and restore the widget state */
     let trackerLogin = new InstanceTracker<Widget>({ namespace: 'incore_login' });
@@ -120,9 +124,20 @@ namespace Private{
         const {commands} = app;
         let menu:Menu = new Menu({commands});
         menu.title.label = 'INCORE apps';
-        menuItem.forEach(item => menu.addItem({command: `Menu-${item.name}: show`}));
+        menuItem.forEach(item => menu.addItem({command: `${item.name}: show`}));
 
         return menu;
+    }
+}
+
+namespace Private{
+    export function createDoc(app:JupyterLab): Menu{
+        const {commands} = app;
+        let doc:Menu = new Menu({commands});
+        doc.title.label = 'INCORE docs';
+        docItem.forEach(item =>doc.addItem({command:`${item.name}: show`}));
+
+        return doc;
     }
 }
 
@@ -157,6 +172,22 @@ export const menuItem = [
         url: 'https://incore2.ncsa.illinois.edu/HazardViewer',
         description:'hazard explorer standalone app',
         target: 'widget'
+    }
+];
+
+// TODO: documentation url might change
+export const docItem = [
+    {
+        name:'pyIncore - Python Library',
+        url:'https://incore2.ncsa.illinois.edu/doc/pyincore',
+        description:'Sphinx documentation for pyincore library',
+        target:'widget'
+    },
+    {
+        name:'IN-CORE Web Service API',
+        url:'https://incore2.ncsa.illinois.edu/doc/api/',
+        description:'Swagger documentation for incore web services',
+        target:'widget'
     }
 ];
 

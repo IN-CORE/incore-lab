@@ -74,14 +74,15 @@ export async function login(username, password) {
 }
 
 export async function appendCredentials() {
-    let info;
+    let info = {};
     try{
         info = await getHeaders();
     }
     catch(error){
-        info = {};
         console.log(error);
     }
+
+    info["location"] = "incoreLab";
     return Object.keys(info).map(key => key + '=' + info[key]).join('&');
 }
 

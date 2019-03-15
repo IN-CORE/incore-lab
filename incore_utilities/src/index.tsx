@@ -75,6 +75,7 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
     app.commands.addCommand(commandLogin, {
         label: 'INCORE login',
         caption:'INCORE login',
+        iconClass: 'jp-IncoreIcon',
         execute: () => {
             if (!LoginWidget) {
                 LoginWidget = new IncoreLoginWidget();

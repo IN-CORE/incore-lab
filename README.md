@@ -8,8 +8,9 @@ Show a plugin that searches the fragilities in incore2-services and visualizes t
 ## Prerequisites
 
 * ~~JupyterLab version 0.32.0 (pip or conda)~~
-* JupyterLab version 0.34.0 (pip or conda)
+* ~~JupyterLab version 0.34.0 (pip or conda)~~
 * ~~@jupyterlab/application version 0.16.2 (npm)~~
+* JupyterLab latest version v1.1.1
 
 ## Setting Up Instructions for the first time:
 1. Install Conda - https://conda.io/miniconda.html

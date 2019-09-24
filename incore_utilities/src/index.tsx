@@ -1,8 +1,8 @@
-import {ILayoutRestorer, JupyterLab, JupyterLabPlugin} from '@jupyterlab/application';
+import {ILayoutRestorer, JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterlab/application';
 
 import { IMainMenu } from '@jupyterlab/mainmenu';
 
-import {IFrame, ICommandPalette, InstanceTracker} from '@jupyterlab/apputils';
+import {IFrame, ICommandPalette, WidgetTracker} from '@jupyterlab/apputils';
 
 import {Menu} from '@phosphor/widgets';
 
@@ -18,7 +18,7 @@ import {IncoreLoginWidget} from "./IncoreLoginWidget";
 
 import '../style/index.css';
 
-async function activate(app: JupyterLab, mainMenu: IMainMenu,
+async function activate(app: JupyterFrontEnd, mainMenu: IMainMenu,
                   palette: ICommandPalette, restorer: ILayoutRestorer, launcher: ILauncher) {
     console.log('JupyterLab extension incore_utilities is activated!');
 
@@ -41,10 +41,14 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
                         iframe.title.label = item.name;
                         iframe.title.closable = true;
                         iframe.node.style.overflowY = 'auto';
+                        iframe.sandbox = ["allow-same-origin",
+                            "allow-scripts",
+                            "allow-popups",
+                            "allow-forms"];
                     }
 
                     if (iframe == null || !iframe.isAttached){
-                        app.shell.addToMainArea(iframe);
+                        app.shell.add(iframe, 'main');
                         app.shell.activateById(iframe.id);
                     }
 
@@ -87,7 +91,7 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
             if (!LoginWidget.isAttached) {
                 LoginWidget = new IncoreLoginWidget();
                 LoginWidget.update();
-                app.shell.addToMainArea(LoginWidget);
+                app.shell.add(LoginWidget, 'main');
             } else {
                 LoginWidget.update();
             }
@@ -107,7 +111,7 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
     mainMenu.addMenu(doc, {rank:0});
 
     /* Track and restore the widget state */
-    let trackerLogin = new InstanceTracker<Widget>({ namespace: 'incore_login' });
+    let trackerLogin = new WidgetTracker<Widget>({ namespace: 'incore_login' });
     restorer.restore(trackerLogin, {
         command: commandLogin,
         args: () => JSONExt.emptyObject,
@@ -121,7 +125,7 @@ async function activate(app: JupyterLab, mainMenu: IMainMenu,
  * A namespace for help plugin private functions
  */
 namespace Private{
-    export function createMenu(app:JupyterLab): Menu{
+    export function createMenu(app:JupyterFrontEnd): Menu{
         const {commands} = app;
         let menu:Menu = new Menu({commands});
         menu.title.label = 'INCORE apps';
@@ -132,7 +136,7 @@ namespace Private{
 }
 
 namespace Private{
-    export function createDoc(app:JupyterLab): Menu{
+    export function createDoc(app:JupyterFrontEnd): Menu{
         const {commands} = app;
         let doc:Menu = new Menu({commands});
         doc.title.label = 'INCORE docs';
@@ -145,7 +149,7 @@ namespace Private{
 /**
  * Initialization data for the incore menu extension
  */
-const extension: JupyterLabPlugin<void> = {
+const extension: JupyterFrontEndPlugin<void> = {
     id: 'jupyterlab_incore_menu',
     autoStart: true,
     requires: [IMainMenu, ICommandPalette,  ILayoutRestorer, ILauncher],
@@ -158,19 +162,19 @@ const extension: JupyterLabPlugin<void> = {
 export const menuItem = [
     {
         name: 'Fragility Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/incore/FragilityViewer',
+        url: 'https://incore2.ncsa.illinois.edu/FragilityViewer',
         description:'fragility explorer standalone app',
         target: 'widget'
     },
     {
         name: 'Data Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/incore/DataViewer',
+        url: 'https://incore2.ncsa.illinois.edu/DataViewer',
         description:'data explorer standalone app',
         target: 'widget'
     },
     {
         name: 'Hazard Explorer',
-        url: 'https://incore2.ncsa.illinois.edu/incore/HazardViewer',
+        url: 'https://incore2.ncsa.illinois.edu/HazardViewer',
         description:'hazard explorer standalone app',
         target: 'widget'
     }

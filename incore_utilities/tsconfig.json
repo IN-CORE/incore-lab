@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "noImplicitAny": false,
     "noEmitOnError": true,
@@ -11,6 +12,7 @@
     "lib": ["es5",
       "es2015.core",
       "es2015.promise",
+      "es2015.iterable",
       "es2017.object",
       "es2015.collection",
       "dom"],

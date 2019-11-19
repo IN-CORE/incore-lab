@@ -183,7 +183,13 @@ export const menuItem = [
 // TODO: documentation url might change
 export const docItem = [
     {
-        name:'pyIncore - Python Library',
+        name:'IN-CORE Manual',
+        url:'https://incore2.ncsa.illinois.edu/doc/incore/index.html',
+        description:'About IN-CORE project',
+        target:'widget'
+    },
+    {
+        name:'pyIncore Reference',
         url:'https://incore2.ncsa.illinois.edu/doc/pyincore',
         description:'Sphinx documentation for pyincore library',
         target:'widget'

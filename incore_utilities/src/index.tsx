@@ -2,17 +2,65 @@ import {ILayoutRestorer, JupyterFrontEnd, JupyterFrontEndPlugin} from '@jupyterl
 
 import { IMainMenu } from '@jupyterlab/mainmenu';
 
-import {IFrame, ICommandPalette} from '@jupyterlab/apputils';
+import {IFrame, ICommandPalette, MainAreaWidget} from '@jupyterlab/apputils';
+
+import {ITerminal, Terminal} from '@jupyterlab/terminal';
 
 import {Menu} from '@phosphor/widgets';
 
 import { ILauncher } from '@jupyterlab/launcher';
 
+import {writeToFile} from "./action";
+
 import '../style/index.css';
 
 async function activate(app: JupyterFrontEnd, mainMenu: IMainMenu,
                   palette: ICommandPalette, restorer: ILayoutRestorer, launcher: ILauncher) {
-    console.log('JupyterLab extension incore_utilities is activated!');
+
+    /* need a customized terminal instance that will start with inital command since version 1.x removed it */
+    app.commands.addCommand("createNew:terminal-with-command", {
+        label: 'Terminal',
+        caption: 'Start a new terminal session with command',
+        execute: async args => {
+            // start a new session with command
+            const session = await app.serviceManager.terminals.startNew();
+            let options: Partial<ITerminal.IOptions> = {initialCommand: "mkdir ~/.incore ; mv .incoretoken ~/.incore/"};
+            let term = new Terminal(session, options);
+            let main = new MainAreaWidget({content: term});
+            app.shell.activateById(main.id);
+        }
+    });
+
+    /* add cookie copyer */
+    let commandCopyCookie = "cookie:copy";
+    app.commands.addCommand(commandCopyCookie, {
+        label: "INCORE Authenticator",
+        caption: "INCORE Authenticator",
+        iconClass: "jp-IncoreIcon",
+        execute: async () => {
+            // get a incore cookie
+            let token = "";
+            let name = "Authorization=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    token = c.substring(name.length, c.length);
+                }
+            }
+
+            // write that cookie to a pyincore credential file
+            let msg = await writeToFile(token);
+            console.log(msg);
+
+            // move the .incoretoken to a pyincore directory
+            app.commands.execute('createNew:terminal-with-command');
+        }
+    });
 
     /* add menus */
     function appendNewCommand(item: any){
@@ -57,7 +105,11 @@ async function activate(app: JupyterFrontEnd, mainMenu: IMainMenu,
     docItem.forEach(item => appendNewCommand(item));
 
     let menu = Private.createMenu(app);
+    menu.addItem({command: commandCopyCookie});
     let doc = Private.createDoc(app);
+
+    palette.addItem({ command: commandCopyCookie, category: 'Other' });
+    launcher.add({ command: commandCopyCookie, category: 'Other' });
 
     mainMenu.addMenu(menu, {rank:0});
     mainMenu.addMenu(doc, {rank:0});

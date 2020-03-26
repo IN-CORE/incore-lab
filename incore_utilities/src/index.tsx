@@ -6,7 +6,7 @@ import {IFrame, ICommandPalette, MainAreaWidget} from '@jupyterlab/apputils';
 
 import {ITerminal, Terminal} from '@jupyterlab/terminal';
 
-import {Menu} from '@phosphor/widgets';
+import {Menu} from '@lumino/widgets';
 
 import { ILauncher } from '@jupyterlab/launcher';
 

@@ -1,7 +1,8 @@
 import os
 import urllib.parse
 
-import jwt
+from jose import jwt
+from jose.exceptions import JWTError, ExpiredSignatureError, JWTClaimsError
 from jupyterhub.auth import Authenticator
 from jupyterhub.handlers import BaseHandler
 from jupyterhub.utils import url_path_join
@@ -27,11 +28,19 @@ class CustomTokenLoginHandler(BaseHandler):
         else:
             # decode jwt token instead of sending it to userinfo endpoint:
             access_token = access_token.split(" ")[1]
-            secret = self.authenticator.keycloak_pem_key
+            public_key = self.authenticator.keycloak_pem_key
 
             try:
-                resp_json = jwt.decode(access_token, secret, algorithms='RS256')
-                if self.authenticator.auth_username_key in resp_json:
+                resp_json = jwt.decode(access_token, public_key)
+                if "incore_jupyter" not in resp_json["groups"]:
+                    print("The current user does not belongs to incore jupyter lab group and cannot access " +
+                          "incore lab")
+                    _url = self.authenticator.landing_page_login_url
+                elif self.authenticator.auth_username_key not in resp_json:
+                    print("required field " + self.authenticator.auth_username_key
+                          + " does not exist in the decoded object!")
+                    _url = self.authenticator.landing_page_login_url
+                else:
                     username = resp_json[self.authenticator.auth_username_key]
                     user = self.user_from_username(username)
                     self.set_login_cookie(user)
@@ -40,11 +49,16 @@ class CustomTokenLoginHandler(BaseHandler):
                     next_url = self.get_argument('next', default=False)
                     if next_url:
                         _url = next_url
-                else:
-                    print("required field " + self.authenticator.auth_username_key
-                          + " does not exist in the decoded object!")
-                    _url = self.authenticator.landing_page_login_url
 
+            except ExpiredSignatureError:
+                print('JWT Expired Signature Error: token signature has expired')
+                _url = self.authenticator.landing_page_login_url
+            except JWTClaimsError:
+                print('JWT Claims Error: token signature is invalid')
+                _url = self.authenticator.landing_page_login_url
+            except JWTError:
+                print('JWT Error: token signature is invalid')
+                _url = self.authenticator.landing_page_login_url
             except Exception as e:
                 print("Not a valid jwt token!")
                 _url = self.authenticator.landing_page_login_url

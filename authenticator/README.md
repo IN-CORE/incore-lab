@@ -1,4 +1,5 @@
 ## INSTALL customauthenticator
+- install python-jose `pip install python-jose`
 - inside the /authenticator directory, do a `pip install . -U`
 - the installed package can be imported by command `from authenticator.custom import CustomTokenAuthenticator`
 

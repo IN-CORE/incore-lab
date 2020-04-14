@@ -90,7 +90,9 @@
 from customauthenticator.custom import CustomTokenAuthenticator
 c.JupyterHub.authenticator_class = CustomTokenAuthenticator
 c.CustomTokenAuthenticator.keycloak_pem_key= \
-    "the keycloak RSA pem key with proper header and footer"
+    f"-----BEGIN PUBLIC KEY-----\n"\
+    f"put public key here"\
+    f"\n-----END PUBLIC KEY-----"
 c.CustomTokenAuthenticator.auth_cookie_header= "Authorization"
 c.CustomTokenAuthenticator.auth_username_key= "preferred_username"
 c.CustomTokenAuthenticator.landing_page_login_url = "http://localhost:3000/login"

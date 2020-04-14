@@ -1,13 +1,14 @@
 from jose import jwt
 from jose.exceptions import JWTError, ExpiredSignatureError, JWTClaimsError
+import os
 
-
-with open("/path/to/the/pem/file", 'r') as f:
-    secret = f.read().encode()
-
+public_key = f"-----BEGIN PUBLIC KEY-----\n"\
+             f"{str(os.environ.get('KEYCLOAK_PUBLIC_KEY'))}"\
+             f"\n-----END PUBLIC KEY-----"
 access_token = ""
+
 try:
-    decoded = jwt.decode(access_token, secret)
+    decoded = jwt.decode(access_token, public_key)
     print(decoded)
 
 except ExpiredSignatureError:

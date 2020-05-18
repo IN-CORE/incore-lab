@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+<<<<<<< HEAD
 ## [Unreleased]
 
 ### [Added]
@@ -13,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.3.1] - 2020-01-31
 
 ### [Added]
-- Jupyter Hub custom authenticator add more coverage of endpoints
+- Jupyter Hub custom authenticator [INCORE1-434](INCORE-1042-writing-custom-authenticator-in-jupyterhub)
 
 ### [Updated]
 - upgrade jupyterlab extension plugins and dependencies to work with Jupyter Lab version 2.0.2 [INCORE1-526](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-526)

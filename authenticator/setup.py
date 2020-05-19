@@ -12,6 +12,6 @@ setup(
         'jupyterhub',
         'pyjwt',
         'requests',
-        'jose'
+        'python-jose'
     ]
 )

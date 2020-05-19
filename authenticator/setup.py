@@ -11,6 +11,7 @@ setup(
     install_requires=[
         'jupyterhub',
         'pyjwt',
-        'requests'
+        'requests',
+        'jose'
     ]
 )

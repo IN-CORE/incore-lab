@@ -37,6 +37,8 @@ class CustomTokenLoginHandler(BaseHandler):
                     user_roles = resp_json.get("roles", [])
                 elif "realm_access" in resp_json:
                     user_roles = resp_json["realm_access"].get("roles", [])
+                else:
+                    user_roles = []
 
                 if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
                     print("The current user does not belongs to incore jupyter lab group and cannot access " +

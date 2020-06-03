@@ -32,7 +32,13 @@ class CustomTokenLoginHandler(BaseHandler):
 
             try:
                 resp_json = jwt.decode(access_token, public_key)
-                if "incore_jupyter" not in resp_json["groups"]:
+                user_groups = resp_json.get("groups", [])
+                if "roles" in resp_json:
+                    user_roles = resp_json.get("roles", [])
+                elif "realm_access" in resp_json:
+                    user_roles = resp_json["realm_access"].get("roles", [])
+
+                if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
                     print("The current user does not belongs to incore jupyter lab group and cannot access " +
                           "incore lab")
                     _url = self.authenticator.landing_page_login_url

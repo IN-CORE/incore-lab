@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+
+## [0.3.2] - 2020-06-01
 
 ### [Added]
 - jupyterhub customauthenticator add ability to check for group and expiration [INCORE1-561](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-561)

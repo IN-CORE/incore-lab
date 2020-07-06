@@ -16,14 +16,15 @@ class CustomTokenLoginHandler(BaseHandler):
 
         self.clear_login_cookie()
         access_token = urllib.parse.unquote(self.get_cookie(self.authenticator.auth_cookie_header, ""))
+        error_params = {'error': None}
 
         # no token in the cookie
         if not access_token:
-            print("No token presented in the cookie!")
+            error_params['error'] = "No token presented in the cookie!"
             _url = self.authenticator.landing_page_login_url
 
         elif len(access_token.split(" ")) != 2 or access_token.split(" ")[0] != 'bearer':
-            print("Token format not valid, it has to be bearer xxxx!")
+            error_params['error'] = "Token format not valid, it has to be bearer xxxx!"
             _url = self.authenticator.landing_page_login_url
         else:
             # decode jwt token instead of sending it to userinfo endpoint:
@@ -41,12 +42,12 @@ class CustomTokenLoginHandler(BaseHandler):
                     user_roles = []
 
                 if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
-                    print("The current user does not belongs to incore jupyter lab group and cannot access " +
-                          "incore lab")
+                    error_params['error'] = "The current user does not belongs to incore jupyter lab group and cannot "
+                    + "access incore lab"
                     _url = self.authenticator.landing_page_login_url
                 elif self.authenticator.auth_username_key not in resp_json:
-                    print("required field " + self.authenticator.auth_username_key
-                          + " does not exist in the decoded object!")
+                    error_params = "required field " + self.authenticator.auth_username_key
+                          + " does not exist in the decoded object!"
                     _url = self.authenticator.landing_page_login_url
                 else:
                     username = resp_json[self.authenticator.auth_username_key]
@@ -59,19 +60,19 @@ class CustomTokenLoginHandler(BaseHandler):
                         _url = next_url
 
             except ExpiredSignatureError:
-                print('JWT Expired Signature Error: token signature has expired')
+                error_params['error'] = 'JWT Expired Signature Error: token signature has expired'
                 _url = self.authenticator.landing_page_login_url
             except JWTClaimsError:
-                print('JWT Claims Error: token signature is invalid')
+                error_params['error'] = 'JWT Claims Error: token signature is invalid'
                 _url = self.authenticator.landing_page_login_url
             except JWTError:
-                print('JWT Error: token signature is invalid')
+                error_params['error'] = 'JWT Error: token signature is invalid'
                 _url = self.authenticator.landing_page_login_url
             except Exception as e:
-                print("Not a valid jwt token!")
+                error_params['error'] = "Not a valid jwt token!"
                 _url = self.authenticator.landing_page_login_url
 
-        self.redirect(_url)
+        self.redirect(_url + "?" + urllib.parse.urlencode(error_params)
 
 
 class CustomTokenLogoutHandler(BaseHandler):

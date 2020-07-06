@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### [Added]
 - Add roles (or realm_access in roles) as criteria to control user access to incore lab [INCORE1-639](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-639)
+- Append error message as query parameter to the redirect url [INCORE1-620](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-620)
 
 ## [0.3.2] - 2020-06-01
 

@@ -46,7 +46,7 @@ class CustomTokenLoginHandler(BaseHandler):
                     + "access incore lab"
                     _url = self.authenticator.landing_page_login_url
                 elif self.authenticator.auth_username_key not in resp_json:
-                    error_params = "required field " + self.authenticator.auth_username_key
+                    error_params['error'] = "required field " + self.authenticator.auth_username_key
                     + " does not exist in the decoded object!"
                     _url = self.authenticator.landing_page_login_url
                 else:
@@ -72,7 +72,10 @@ class CustomTokenLoginHandler(BaseHandler):
                 error_params['error'] = "Not a valid jwt token!"
                 _url = self.authenticator.landing_page_login_url
 
-        self.redirect(_url + "?" + urllib.parse.urlencode(error_params))
+        if error_params['error']:
+            self.redirect(_url + "?" + urllib.parse.urlencode(error_params))
+        else:
+            self.redirect(_url)
 
 
 class CustomTokenLogoutHandler(BaseHandler):

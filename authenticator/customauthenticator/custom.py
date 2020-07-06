@@ -47,7 +47,7 @@ class CustomTokenLoginHandler(BaseHandler):
                     _url = self.authenticator.landing_page_login_url
                 elif self.authenticator.auth_username_key not in resp_json:
                     error_params = "required field " + self.authenticator.auth_username_key
-                          + " does not exist in the decoded object!"
+                    + " does not exist in the decoded object!"
                     _url = self.authenticator.landing_page_login_url
                 else:
                     username = resp_json[self.authenticator.auth_username_key]
@@ -72,7 +72,7 @@ class CustomTokenLoginHandler(BaseHandler):
                 error_params['error'] = "Not a valid jwt token!"
                 _url = self.authenticator.landing_page_login_url
 
-        self.redirect(_url + "?" + urllib.parse.urlencode(error_params)
+        self.redirect(_url + "?" + urllib.parse.urlencode(error_params))
 
 
 class CustomTokenLogoutHandler(BaseHandler):

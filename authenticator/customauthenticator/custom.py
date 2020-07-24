@@ -30,7 +30,6 @@ class CustomTokenLoginHandler(BaseHandler):
             # decode jwt token instead of sending it to userinfo endpoint:
             access_token = access_token.split(" ")[1]
             public_key = self.authenticator.keycloak_pem_key
-
             try:
                 resp_json = jwt.decode(access_token, public_key)
                 user_groups = resp_json.get("groups", [])
@@ -40,14 +39,15 @@ class CustomTokenLoginHandler(BaseHandler):
                     user_roles = resp_json["realm_access"].get("roles", [])
                 else:
                     user_roles = []
-
                 if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
-                    error_params['error'] = "The current user does not belongs to incore jupyter lab group and cannot "
-                    + "access incore lab"
+                    error_params['error'] = \
+                        "The current user does not belongs to incore jupyter lab group and cannot access incore lab"
                     _url = self.authenticator.landing_page_login_url
-                elif self.authenticator.auth_username_key not in resp_json:
-                    error_params['error'] = "required field " + self.authenticator.auth_username_key
-                    + " does not exist in the decoded object!"
+                elif self.authenticator.auth_username_key not in resp_json.keys():
+                    error_params['error'] = \
+                        "required field " \
+                        + self.authenticator.auth_username_key \
+                        + " does not exist in the decoded object!"
                     _url = self.authenticator.landing_page_login_url
                 else:
                     username = resp_json[self.authenticator.auth_username_key]

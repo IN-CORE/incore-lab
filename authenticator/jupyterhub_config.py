@@ -95,8 +95,8 @@ c.CustomTokenAuthenticator.keycloak_pem_key= \
     f"\n-----END PUBLIC KEY-----"
 c.CustomTokenAuthenticator.auth_cookie_header= "Authorization"
 c.CustomTokenAuthenticator.auth_username_key= "preferred_username"
-c.CustomTokenAuthenticator.landing_page_login_url = "http://localhost:3000/login"
-# c.CustomTokenAuthenticator.landing_page_login_url = "https://incore2.ncsa.illinois.edu/login"
+c.CustomTokenAuthenticator.landing_page_login_url = "http://localhost:3000"
+# c.CustomTokenAuthenticator.landing_page_login_url = "https://incore2.ncsa.illinois.edu"
 
 ## The base URL of the entire application.
 #  

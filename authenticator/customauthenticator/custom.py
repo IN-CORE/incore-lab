@@ -20,7 +20,7 @@ class CustomTokenLoginHandler(BaseHandler):
 
         # no token in the cookie
         if not access_token:
-            error_params['error'] = "No token presented in the cookie!"
+            error_params['error'] = "User not Logged in (no token presented in the cookie)."
             _url = self.authenticator.landing_page_login_url
 
         elif len(access_token.split(" ")) != 2 or access_token.split(" ")[0] != 'bearer':
@@ -41,7 +41,8 @@ class CustomTokenLoginHandler(BaseHandler):
                     user_roles = []
                 if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
                     error_params['error'] = \
-                        "The current user does not belongs to incore jupyter lab group and cannot access incore lab"
+                        "The current user does not belongs to incore jupyter lab group and cannot access incore lab. " \
+                        "Please contact NCSA IN-CORE development team"
                     _url = self.authenticator.landing_page_login_url
                 elif self.authenticator.auth_username_key not in resp_json.keys():
                     error_params['error'] = \

@@ -20,7 +20,7 @@ class CustomTokenLoginHandler(BaseHandler):
 
         # no token in the cookie
         if not access_token:
-            error_params['error'] = "User not Logged in (no token presented in the cookie)."
+            error_params['error'] = "User not Logged in."
             _url = self.authenticator.landing_page_login_url
 
         elif len(access_token.split(" ")) != 2 or access_token.split(" ")[0] != 'bearer':

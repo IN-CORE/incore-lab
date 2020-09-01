@@ -20,7 +20,7 @@ class CustomTokenLoginHandler(BaseHandler):
 
         # no token in the cookie
         if not access_token:
-            error_params['error'] = "User not Logged in."
+            error_params['error'] = "Please login to access IN-CORE Lab."
             _url = self.authenticator.landing_page_login_url
 
         elif len(access_token.split(" ")) != 2 or access_token.split(" ")[0] != 'bearer':
@@ -84,6 +84,10 @@ class CustomTokenLogoutHandler(BaseHandler):
     def get(self):
         self.clear_login_cookie()
         self.set_cookie(self.authenticator.auth_cookie_header, "")
+
+        # redirect to landing page
+        _url = self.authenticator.landing_page_login_url
+        self.redirect(_url)
 
 
 class CustomTokenAuthenticator(Authenticator):

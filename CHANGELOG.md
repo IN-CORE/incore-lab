@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### [Bugfix]
+- Replace fragility with DFR3 [INCORE1-761](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-761)
+
 ### [Added]
 - Redirect to landing page when log out [INCORE1-715](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-715)
+
 
 ## [0.4.0] - 2020-07-28
 

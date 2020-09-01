@@ -158,21 +158,21 @@ let hostDomainName = window.location.origin;
  */
 export const menuItem = [
     {
-        name: 'Fragility Explorer',
-        url: `${hostDomainName}/FragilityViewer`,
-        description:'fragility explorer standalone app',
+        name: 'DFR3 Viewer',
+        url: `${hostDomainName}/DFR3Viewer`,
+        description:'dfr3 viewer standalone app',
         target: 'widget'
     },
     {
-        name: 'Data Explorer',
+        name: 'Data Viewer',
         url: `${hostDomainName}/DataViewer`,
-        description:'data explorer standalone app',
+        description:'data viewer standalone app',
         target: 'widget'
     },
     {
-        name: 'Hazard Explorer',
+        name: 'Hazard Viewer',
         url: `${hostDomainName}/HazardViewer`,
-        description:'hazard explorer standalone app',
+        description:'hazard viewer standalone app',
         target: 'widget'
     }
 ];

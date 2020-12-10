@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='customauthenticator',
-    version='0.5.0',
+    version='0.5.1',
     description='Custom Authenticator for JupyterHub',
     author='cwang138',
     author_email='cwang138@illinois.edu',

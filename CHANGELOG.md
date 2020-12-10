@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.1] - 2020-12-10
+
+### [Bugfix]
+- Update dependency libraries to resolve build error [INCORE1-847](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-847)
+
+
 ## [0.5.0] - 2020-09-08
 
 ### [Bugfix]

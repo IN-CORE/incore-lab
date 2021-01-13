@@ -87,15 +87,19 @@
 #    - default: jupyterhub.auth.PAMAuthenticator
 #    - dummy: jupyterhub.auth.DummyAuthenticator
 #    - pam: jupyterhub.auth.PAMAuthenticator
-from customauthenticator.custom import CustomTokenAuthenticator
-c.JupyterHub.authenticator_class = CustomTokenAuthenticator
-c.CustomTokenAuthenticator.keycloak_pem_key= \
-    f"-----BEGIN PUBLIC KEY-----\n"\
-    f"put public key here"\
-    f"\n-----END PUBLIC KEY-----"
-c.CustomTokenAuthenticator.auth_cookie_header= "Authorization"
-c.CustomTokenAuthenticator.auth_username_key= "preferred_username"
-c.CustomTokenAuthenticator.landing_page_login_url = "http://localhost:3000"
+
+# Configuration for Incore
+#from customauthenticator.custom import CustomTokenAuthenticator
+#c.JupyterHub.authenticator_class = CustomTokenAuthenticator
+#c.CustomTokenAuthenticator.keycloak_pem_key= \
+#     f"-----BEGIN PUBLIC KEY-----\n"\
+#     f"put public key here"\
+#     f"\n-----END PUBLIC KEY-----"
+#c.CustomTokenAuthenticator.keycloak_url= "http://localhost:9000/"
+#c.CustomTokenAuthenticator.keycloak_audience= "InCore"
+#c.CustomTokenAuthenticator.auth_cookie_header= "Authorization"
+#c.CustomTokenAuthenticator.auth_username_key= "preferred_username"
+#c.CustomTokenAuthenticator.landing_page_login_url = "http://localhost:3000"
 # c.CustomTokenAuthenticator.landing_page_login_url = "https://incore2.ncsa.illinois.edu"
 
 ## The base URL of the entire application.

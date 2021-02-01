@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.2] - 2021-02-01
+
+### [Bugfix]
+- Upgrade dependency libraries to work with JupyterLab 3.0.6 [INCORE1-944](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-944)
+
+
 ## [0.5.1] - 2020-12-10
 
 ### [Bugfix]

@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### [Bugfix]
 - Upgrade dependency libraries to work with JupyterLab 3.0.6 [INCORE1-944](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-944)
 
+### [Changed]
+- Make jhub authenticator work with JWT token and traefik [INCORE1-616](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-616)
+
 
 ## [0.5.1] - 2020-12-10
 

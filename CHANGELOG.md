@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### [Changed]
 - Make jhub authenticator work with JWT token and traefik [INCORE1-616](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-616)
+- Rewrite the jhub authenticator to store additional ldap user information for jlab spawners [INCORE1-960](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-960)
 
 
 ## [0.5.1] - 2020-12-10

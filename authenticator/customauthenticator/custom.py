@@ -165,7 +165,7 @@ class CustomTokenAuthenticator(Authenticator):
             if e.log_message:
                 error_msg = urllib.parse.quote(e.log_message.encode('utf-8'))
             else:
-                error_msg = urllib.parse.quote(f"Error {e}".encode('utf-8'))
+                error_msg = urllib.parse.quote(f"Error {e}".encode('utf-8')) + ". Please login to access IN-CORE Lab."
             handler.redirect(f"{self.landing_page_login_url}?error={error_msg}")
 
     async def pre_spawn_start(self, user, spawner):
@@ -199,6 +199,8 @@ class CustomTokenLogoutHandler(LogoutHandler):
     async def handle_logout(self):
         # remove incore token on logout
         self.log.info("Remove incore token on logout")
+        error_msg = "You have logged out of IN-CORE system from IN-CORE lab. Please login again if you want to use " \
+                    "IN-CORE components."
         self.set_cookie(self.authenticator.auth_cookie_header, "")
-        self.redirect(self.landing_page_login_url)
+        self.redirect(f"{self.authenticator.landing_page_login_url}?error={error_msg}")
 

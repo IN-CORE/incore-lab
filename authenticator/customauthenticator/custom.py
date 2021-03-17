@@ -190,8 +190,6 @@ class CustomTokenAuthenticator(Authenticator):
             user = self.check_jwt_token(access_token)
             return user
         except:
-            handler.clear_cookie("jupyterhub-hub-login")
-            handler.clear_cookie("jupyterhub-session-id")
             handler.redirect(f"{self.landing_page_login_url}?error={error_msg}")
             return False
 

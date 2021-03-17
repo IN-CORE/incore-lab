@@ -62,7 +62,7 @@ class CustomTokenAuthenticator(Authenticator):
             (r'/user', LoginHandler),
             (r'/lab', LoginHandler),
             (r'/login', LoginHandler),
-            (r'/logout', LogoutHandler),
+            (r'/logout', CustomTokenLogoutHandler),
         ]
 
     def get_keycloak_pem(self):
@@ -193,4 +193,12 @@ class CustomTokenAuthenticator(Authenticator):
             handler.redirect(f"{self.landing_page_login_url}?error={error_msg}")
             return False
 
+
+class CustomTokenLogoutHandler(LogoutHandler):
+
+    async def handle_logout(self):
+        # remove incore token on logout
+        self.log.info("Remove incore token on logout")
+        self.set_cookie(self.authenticator.auth_cookie_header, "")
+        self.redirect(self.landing_page_login_url)
 

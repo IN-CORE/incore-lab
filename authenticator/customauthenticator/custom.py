@@ -67,7 +67,7 @@ class CustomTokenAuthenticator(Authenticator):
 
     def get_keycloak_pem(self):
         if not self.keycloak_url:
-            raise web.HTTPError(500, log_messag="JupyterHub is not correctly configured.")
+            raise web.HTTPError(500, log_message="JupyterHub is not correctly configured.")
 
         # fetch the key
         response = urllib.request.urlopen(self.keycloak_url)
@@ -78,7 +78,7 @@ class CustomTokenAuthenticator(Authenticator):
                                     f"{result['public_key']}\n" \
                                     f"-----END PUBLIC KEY-----"
         else:
-            raise web.HTTPError(500, log_messag="Could not get key from keycloak.")
+            raise web.HTTPError(500, log_message="Could not get key from keycloak.")
 
     def check_jwt_token(self, access_token):
         # make sure we have the pem cert
@@ -87,15 +87,15 @@ class CustomTokenAuthenticator(Authenticator):
 
         # make sure audience is set
         if not self.keycloak_audience:
-            raise web.HTTPError(403, log_messag="JupyterHub is not correctly configured.")
+            raise web.HTTPError(403, log_message="JupyterHub is not correctly configured.")
 
         # no token in the cookie
         if not access_token:
-            raise web.HTTPError(401, log_messag="Please login to access IN-CORE Lab.")
+            raise web.HTTPError(401, log_message="Please login to access IN-CORE Lab.")
 
         # make sure it is a valid token
         if len(access_token.split(" ")) != 2 or access_token.split(" ")[0] != 'bearer':
-            raise web.HTTPError(403, log_messag="Token format not valid, it has to be bearer xxxx!")
+            raise web.HTTPError(403, log_message="Token format not valid, it has to be bearer xxxx!")
 
         # decode jwt token instead of sending it to userinfo endpoint:
         access_token = access_token.split(" ")[1]
@@ -104,22 +104,22 @@ class CustomTokenAuthenticator(Authenticator):
         try:
             resp_json = jwt.decode(access_token, public_key, audience=audience)
         except ExpiredSignatureError:
-            raise web.HTTPError(403, log_messag='JWT Expired Signature Error: token signature has expired')
+            raise web.HTTPError(403, log_message='JWT Expired Signature Error: token signature has expired')
         except JWTClaimsError:
-            raise web.HTTPError(403, log_messag='JWT Claims Error: token signature is invalid')
+            raise web.HTTPError(403, log_message='JWT Claims Error: token signature is invalid')
         except JWTError:
-            raise web.HTTPError(403, log_messag='JWT Error: token signature is invalid')
+            raise web.HTTPError(403, log_message='JWT Error: token signature is invalid')
         except Exception as e:
-            raise web.HTTPError(403, log_messag="Not a valid jwt token!")
+            raise web.HTTPError(403, log_message="Not a valid jwt token!")
 
         # make sure we know username
         if self.auth_username_key not in resp_json.keys():
-            raise web.HTTPError(500, log_messag=f"Required field {self.auth_username_key} does not exist in jwt token")
+            raise web.HTTPError(500, log_message=f"Required field {self.auth_username_key} does not exist in jwt token")
         username = resp_json[self.auth_username_key]
 
         # make sure there is a user id
         if self.auth_uid_number_key not in resp_json.keys():
-            raise web.HTTPError(500, log_messag=f"Required field {self.auth_uid_number_key} does not exist in jwt token")
+            raise web.HTTPError(500, log_message=f"Required field {self.auth_uid_number_key} does not exist in jwt token")
         uid = resp_json[self.auth_uid_number_key]
 
         # get the groups/roles for the user
@@ -133,7 +133,7 @@ class CustomTokenAuthenticator(Authenticator):
 
         # check authorization
         if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
-            raise web.HTTPError(403, log_messag="The current user does not belongs to incore jupyter lab group and " +
+            raise web.HTTPError(403, log_message="The current user does not belongs to incore jupyter lab group and " +
                                                 "cannot access incore lab. Please contact NCSA IN-CORE development team")
 
         admin = False
@@ -156,7 +156,7 @@ class CustomTokenAuthenticator(Authenticator):
         try:
             access_token = urllib.parse.unquote(handler.get_cookie(self.auth_cookie_header, ""))
             if not access_token:
-                raise web.HTTPError(401, log_messag="Please login to access IN-CORE Lab.")
+                raise web.HTTPError(401, log_message="Please login to access IN-CORE Lab.")
 
             # check token and authorization
             user = self.check_jwt_token(access_token)
@@ -184,7 +184,7 @@ class CustomTokenAuthenticator(Authenticator):
             access_token = urllib.parse.unquote(handler.get_cookie(self.auth_cookie_header, ""))
             # if no token present
             if not access_token:
-                raise web.HTTPError(401, log_messag=error_msg)
+                raise web.HTTPError(401, log_message=error_msg)
 
             # if token present, check token and authorization
             user = self.check_jwt_token(access_token)

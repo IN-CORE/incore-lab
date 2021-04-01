@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.3] - 2021-04-01
+
+### [Bugfix]
+- Fix bugs on jhub authenticator logout: periodically check user auth expiration; clear auth cookie on logout; provide meaningful message [INCORE1-995](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-995)
+
+
 ## [0.5.2] - 2021-02-01
 
 ### [Bugfix]

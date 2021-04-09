@@ -1,6 +1,6 @@
 {
   "name": "incore_utilities",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "customized menu and login to redirect to incore webapp",
   "keywords": [
     "jupyter",

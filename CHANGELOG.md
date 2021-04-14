@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.5.3] - 2021-04-14
 
-### [Bugfix]
-- Fix bugs on jhub authenticator logout: periodically check user auth expiration; clear auth cookie on logout; provide meaningful message [INCORE1-995](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-995)
+### [Changed]
+- When logging out from jupyterhub, also logout from INCORE
 
 
 ## [0.5.2] - 2021-02-01

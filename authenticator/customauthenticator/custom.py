@@ -177,21 +177,23 @@ class CustomTokenAuthenticator(Authenticator):
         spawner.environment['NB_UID'] = str(auth_state['uid'])
         self.log.info(str(spawner.environment))
 
-    async def refresh_user(self, user, handler):
-        self.log.info("Refresh User")
-        error_msg = "Your login is expired. Please login to access IN-CORE Lab."
-        try:
-            access_token = urllib.parse.unquote(handler.get_cookie(self.auth_cookie_header, ""))
-            # if no token present
-            if not access_token:
-                raise web.HTTPError(401, log_message=error_msg)
-
-            # if token present, check token and authorization
-            user = self.check_jwt_token(access_token)
-            return user
-        except:
-            handler.redirect(f"{self.landing_page_login_url}?error={error_msg}")
-            return False
+#
+#    # This is called from the jupyterlab so there is no cookies that this depends on
+#    async def refresh_user(self, user, handler):
+#        self.log.info("Refresh User")
+#        try:
+#            access_token = urllib.parse.unquote(handler.get_cookie(self.auth_cookie_header, ""))
+#            # if no token present
+#            if not access_token:
+#                return False
+#
+#            # if token present, check token and authorization
+#            if self.check_jwt_token(access_token):
+#                True
+#            return False
+#        except:
+#            self.log.exception("Error in refresh user")
+#            return False
 
 
 class CustomTokenLogoutHandler(LogoutHandler):

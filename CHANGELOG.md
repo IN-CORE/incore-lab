@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.6.0] - unreleased
+
+### [Added]
+- When a new instance of incore lab is started it will use quotas based on the user [INCORE1-1182](https://opensource.ncsa.illinois.edu/jira/browse/INCORE1-1182)
+
 ## [0.5.3] - 2021-04-14
 
 ### [Changed]

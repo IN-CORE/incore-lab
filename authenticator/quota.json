@@ -1,0 +1,24 @@
+{
+  "groups": {
+     "incore_ncsa": {
+       "weight": 1,
+       "cpu": [ 1, 8 ],
+       "mem": [ 2, 16 ],
+       "disk": 100,
+       "service": [ 200, 5 ]
+     },
+     "incore_coe": {
+       "weight": 0,
+       "cpu": [ 1, 4 ],
+       "mem": [ 2, 8 ],
+       "disk": 10,
+       "service": [ 200, 5 ]
+     }
+   },
+   "default": {
+     "cpu": [ 1, 2 ],
+     "mem": [ 2, 4 ],
+     "disk": 4,
+     "service": [ 100, 2 ]
+   }
+}

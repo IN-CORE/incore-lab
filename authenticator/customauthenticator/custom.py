@@ -56,6 +56,8 @@ class CustomTokenAuthenticator(Authenticator):
         help="the RSA pem key with proper header and footer (deprecated)",
     )
 
+    quotas = None
+
     def get_handlers(self, app):
         return [
             (r'/', LoginHandler),
@@ -168,14 +170,51 @@ class CustomTokenAuthenticator(Authenticator):
                 error_msg = urllib.parse.quote(f"Error {e}".encode('utf-8')) + ". Please login to access IN-CORE Lab."
             handler.redirect(f"{self.landing_page_login_url}?error={error_msg}")
 
+    def find_quota(self, user, auth_state):
+        # TODO need to store the parameters in a config that can be retrieved
+        #      one option is to put this in the frontend and all applications
+        #      can read it from there.
+        if not self.quotas:
+            try:
+                self.quotas = json.load(open("/etc/quota.json"))
+            except:
+                self.log.exception("Could not load quota")
+                self.quotas = {}
+
+        if "users" in self.quotas and user.name in self.quotas["users"]:
+            return self.quotas["users"][user.name]
+        if "groups" in self.quotas:
+            for group, quota in sorted(self.quotas["groups"].items(), key=lambda x: x[1].get("weight", 0), reverse=True):
+                if group in auth_state["groups"]:
+                    return quota
+        if "default" in self.quotas:
+            return self.quotas["default"]
+
+        # default quotas
+        return { "cpu": [ 1, 2 ], "mem": [ 2, 4 ], "disk": 4, "service": [100, 2]}
+
     async def pre_spawn_start(self, user, spawner):
         auth_state = await user.get_auth_state()
         if not auth_state:
             self.log.error("No auth state")
             return
+
         spawner.environment['NB_USER'] = user.name
         spawner.environment['NB_UID'] = str(auth_state['uid'])
-        self.log.info(str(spawner.environment))
+
+        quota = self.find_quota(user, auth_state)
+        if "cpu" in quota:
+            spawner.cpu_guarantee = quota["cpu"][0]
+            spawner.cpu_limit = quota["cpu"][1]
+        else:
+            spawner.cpu_guarantee = 1
+            spawner.cpu_limit = 2
+        if "mem" in quota:
+            spawner.mem_guarantee = f"{quota['mem'][0]}G"
+            spawner.mem_limit = f"{quota['mem'][1]}G"
+        else:
+            spawner.mem_guarantee = "2G"
+            spawner.mem_limit = "4G"
 
 #
 #    # This is called from the jupyterlab so there is no cookies that this depends on

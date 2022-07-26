@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] 
+
+### Added
+- Incore-lab jupyterlab docker file [#24](https://github.com/IN-CORE/incore-lab/issues/24)
+
 ## [0.5.4] - 2020-05-21
 
 ### Added

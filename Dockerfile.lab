@@ -1,0 +1,58 @@
+FROM jupyterhub/singleuser:1.5.0
+
+USER root
+RUN apt-get -qq update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    zip unzip \
+    gdal-bin \
+    libspatialindex-dev \
+    nano \
+    vim-tiny \
+    lsof && \
+  rm -rf /var/lib/apt/lists/*
+USER $NB_USER
+
+# install extensions
+RUN jupyter labextension install \
+      jupyter-leaflet \
+      @jupyterlab/fasta-extension \
+      @jupyterlab/geojson-extension \
+      @jupyterlab/vega2-extension \
+      @jupyter-widgets/jupyterlab-manager \
+      jupyter-matplotlib 
+
+# install incore data fragility viewer
+# TODO why not push to npm?
+COPY --chown=$NB_USER:0 incore_utilities/ /tmp/incore_utilities/
+RUN echo "install incore data fragility viewer" && \
+  cd /tmp/incore_utilities && \
+  npm install && \
+  npm run clean && \
+  npm run build && \
+  jupyter labextension install . --no-build && \
+  jupyter labextension link . && \
+  cd && \
+  rm -rf /tmp/npm* /tmp/v8* /tmp/incore_utilities
+
+# IN-CORE environment variables
+ARG CHANNEL="in-core"
+ARG PYINCORE="1.6.0"
+ARG PYINCORE_VIZ="1.7.0"
+ARG PYINCORE_DATA="0.5.1"
+ARG INCORE="3.5.0"
+
+ENV INCORE=${INCORE} \
+    PYINCORE=${PYINCORE} \
+    PYINCORE_VIZ=${PYINCORE_VIZ} \
+    PYINCORE_DATA=${PYINCORE_DATA}
+
+# install pyincore, pyincore-viz and other conda packages
+RUN conda config --add channels in-core && \
+  mamba install -c ${CHANNEL} -y \
+     pyincore=${PYINCORE} \
+     pyincore-viz=${PYINCORE_VIZ} \
+     pyincore-data=${PYINCORE_DATA} && \
+  mamba clean -y -a --force-pkgs-dirs && \
+  chmod 777 /opt/conda/share/jupyter/lab/settings/build_config.json && \
+  chmod 777 -R /opt/conda/

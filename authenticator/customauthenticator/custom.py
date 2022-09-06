@@ -134,8 +134,8 @@ class CustomTokenAuthenticator(Authenticator):
             user_roles = []
 
         # check authorization
-        if "incore_jupyter" not in user_groups and "incore_jupyter" not in user_roles:
-            raise web.HTTPError(403, log_message="The current user does not belongs to incore jupyter lab group and " +
+        if "incore_user" not in user_groups and "incore_user" not in user_roles:
+            raise web.HTTPError(403, log_message="The current user does not belongs to incore user group and " +
                                                 "cannot access incore lab. Please contact NCSA IN-CORE development team")
 
         admin = False

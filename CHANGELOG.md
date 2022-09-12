@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Incore-lab jupyterlab docker file [#24](https://github.com/IN-CORE/incore-lab/issues/24)
 
+### Changed
+- Removed incore_jupyter group from incore-lab and switched to env variables [#29](https://github.com/IN-CORE/incore-lab/issues/29)
+
 ## [0.5.4] - 2020-05-21
 
 ### Added

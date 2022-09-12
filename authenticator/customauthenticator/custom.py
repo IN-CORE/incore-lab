@@ -56,6 +56,18 @@ class CustomTokenAuthenticator(Authenticator):
         help="the RSA pem key with proper header and footer (deprecated)",
     )
 
+    auth_group = Unicode(
+        os.environ.get('AUTH_GROUP', ''),
+        config=True,
+        help="the user group for incore jupyterhub authenticator"
+    )
+
+    auth_role = Unicode(
+        os.environ.get('AUTH_ROLE', ''),
+        config=True,
+        help="the user role for incore jupyterhub authenticator"
+    )
+
     quotas = None
 
     def get_handlers(self, app):
@@ -134,7 +146,7 @@ class CustomTokenAuthenticator(Authenticator):
             user_roles = []
 
         # check authorization
-        if "incore_user" not in user_groups and "incore_user" not in user_roles:
+        if self.auth_group not in user_groups and self.auth_role not in user_roles:
             raise web.HTTPError(403, log_message="The current user does not belongs to incore user group and " +
                                                 "cannot access incore lab. Please contact NCSA IN-CORE development team")
 

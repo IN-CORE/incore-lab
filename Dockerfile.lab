@@ -1,5 +1,6 @@
 FROM jupyterhub/singleuser:1.5.0
 
+# install packages
 USER root
 RUN apt-get -qq update && apt-get install -y --no-install-recommends \
     curl \
@@ -13,19 +14,20 @@ RUN apt-get -qq update && apt-get install -y --no-install-recommends \
   rm -rf /var/lib/apt/lists/*
 USER $NB_USER
 
-# install extensions
-RUN jupyter labextension install \
+# install extensions, use umask 0 to make sure permissions are correct
+RUN umask 0 && \
+  jupyter labextension install \
       jupyter-leaflet \
       @jupyterlab/fasta-extension \
       @jupyterlab/geojson-extension \
       @jupyterlab/vega2-extension \
       @jupyter-widgets/jupyterlab-manager \
-      jupyter-matplotlib 
+      jupyter-matplotlib
 
 # install incore data fragility viewer
-# TODO why not push to npm?
 COPY --chown=$NB_USER:0 incore_utilities/ /tmp/incore_utilities/
-RUN echo "install incore data fragility viewer" && \
+RUN umask 0 && \
+  echo "install incore data fragility viewer" && \
   cd /tmp/incore_utilities && \
   npm install && \
   npm run clean && \
@@ -35,24 +37,31 @@ RUN echo "install incore data fragility viewer" && \
   cd && \
   rm -rf /tmp/npm* /tmp/v8* /tmp/incore_utilities
 
-# IN-CORE environment variables
+# IN-CORE variables, set these to control versions to be installed
+# use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.6.0"
-ARG PYINCORE_VIZ="1.7.0"
-ARG PYINCORE_DATA="0.5.1"
-ARG INCORE="3.5.0"
+ARG PYINCORE="1.7.0"
+ARG PYINCORE_VIZ="1.8.0"
+ARG PYINCORE_DATA="0.5.2"
+ARG INCORE="3.6.0"
 
+# store versions installed as environment variables
 ENV INCORE=${INCORE} \
     PYINCORE=${PYINCORE} \
     PYINCORE_VIZ=${PYINCORE_VIZ} \
     PYINCORE_DATA=${PYINCORE_DATA}
 
 # install pyincore, pyincore-viz and other conda packages
-RUN conda config --add channels in-core && \
+# mamba files installed will now have rw for others. Use find to collect
+# names of files installed and chane permissions.
+RUN umask 0 && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
+  conda config --add channels in-core && \
   mamba install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \
-  mamba clean -y -a --force-pkgs-dirs && \
-  chmod 777 /opt/conda/share/jupyter/lab/settings/build_config.json && \
-  chmod 777 -R /opt/conda/
+  mamba clean --yes --all --force-pkgs-dirs && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
+  comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
+  rm -f /tmp/oldfiles /tmp/newfiles

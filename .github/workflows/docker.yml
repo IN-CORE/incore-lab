@@ -39,6 +39,7 @@ jobs:
       # calculate some variables that are used later
       - name: version information
         run: |
+          echo ${GITHUB_REF_NAME}
           if [ "${{ github.event.release.target_commitish }}" != "" ]; then
             BRANCH="${{ github.event.release.target_commitish }}"
           elif [[ $GITHUB_REF =~ pull ]]; then
@@ -164,8 +165,8 @@ jobs:
           push: true
           platforms: "linux/amd64,linux/arm64"
           file: Dockerfile.${{ matrix.name }}
-          cache-from: type=gha,scope=${{ GITHUB_REF_NAME }}-${{ matrix.name }}
-          cache-to: type=gha,scope=${{ GITHUB_REF_NAME }}-${{ matrix.name }},mode=max
+          cache-from: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }}
+          cache-to: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}
 
       # update README at DockerHub

@@ -44,7 +44,7 @@ jobs:
           elif [[ $GITHUB_REF =~ pull ]]; then
             BRANCH="$(echo $GITHUB_REF | sed 's#refs/pull/\([0-9]*\)/merge#PR-\1#')"
           else
-            BRANCH=${GITHUB_REF##*/}
+            BRANCH=${GITHUB_REF_NAME}
           fi
 
           # should we push to dockerhub, and is there a README
@@ -161,10 +161,11 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          push: true
           platforms: "linux/amd64,linux/arm64"
           file: Dockerfile.${{ matrix.name }}
-          cache-from: type=gha,scope=$GITHUB_REF_NAME-${{ matrix.name }}
-          cache-to: type=gha,scope=$GITHUB_REF_NAME-${{ matrix.name }},mode=max
+          cache-from: type=gha,scope=${GITHUB_REF_NAME}-${{ matrix.name }}
+          cache-to: type=gha,scope=${GITHUB_REF_NAME}-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}
 
       # update README at DockerHub

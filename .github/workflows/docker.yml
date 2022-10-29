@@ -14,7 +14,7 @@ on:
 
 env:
   MAIN_REPO: IN-CORE/incore-lab
-  GITHUB_PUSH: "false"
+  GITHUB_PUSH: "true"
 
 jobs:
 
@@ -109,7 +109,9 @@ jobs:
           echo "TAGS=${tags}"
           echo "PUSH_TAGS=${push_tags}"
 
-          echo "PUSH=${push}" >> $GITHUB_ENV
+          echo "DOCKERHUB_PUSH=${DOCKERHUB_PUSH}" >> $GITHUB_ENV
+          echo "DOCKERHUB_README=${DOCKERHUB_README}" >> $GITHUB_ENV
+          echo "NCSAHUB_PUSH=${NCSAHUB_PUSH}" >> $GITHUB_ENV
           echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
           echo "VERSION=${version}" >> $GITHUB_ENV
           echo "TAGS=${push_tags}" >> $GITHUB_ENV
@@ -132,12 +134,14 @@ jobs:
 
       # login to registries
       - name: Login to DockerHub
+        if: env.DOCKERHUB_PUSH == 'true'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Login to NCSA
+        if: env.NCSAHUB_PUSH == 'true'
         uses: docker/login-action@v2
         with:
           registry: hub.ncsa.illinois.edu
@@ -145,6 +149,7 @@ jobs:
           password: ${{ secrets.HUB_PASSWORD }}
 
       - name: Login to GitHub Container Registry
+        if: env.GITHUB_PUSH == 'true'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io

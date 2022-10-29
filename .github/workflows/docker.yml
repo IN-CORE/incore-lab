@@ -91,6 +91,7 @@ jobs:
           fi
 
           push_tags=""
+          OWNER=${GITHUB_REPOSITORY_OWNER,,}
           for tag in ${tags}; do
             if [ "${DOCKERHUB_PUSH}" == "true" ]; then
               push_tags="${push_tags}incore/jupyterhub:${tag},"
@@ -99,7 +100,7 @@ jobs:
               push_tags="${push_tags}hub.ncsa.illinois.edu/incore/${{ matrix.name }}:${tag},"
             fi
             if [ "${GITHUB_PUSH}" == "true" ]; then
-              push_tags="${push_tags}ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:${tag},"
+              push_tags="${push_tags}ghcr.io/${OWNER}/${{ matrix.name }}:${tag},"
             fi
           done
           push_tags="${push_tags%,*}"

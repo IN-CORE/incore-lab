@@ -159,11 +159,12 @@ jobs:
 
       # build and push docker images
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           platforms: "linux/amd64,linux/arm64"
-          #cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ matrix.IMAGE }}-cache:${{ env.BRANCH }}
-          #cache-to: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ matrix.IMAGE }}-cache:${{ env.BRANCH }},mode=max
+          file: Dockerfile.${{ matrix.name }}
+          cache-from: type=gha,scope=$GITHUB_REF_NAME-${{ matrix.name }}
+          cache-to: type=gha,,scope=$GITHUB_REF_NAME-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}
 
       # update README at DockerHub

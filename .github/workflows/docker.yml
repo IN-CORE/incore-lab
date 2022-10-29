@@ -21,7 +21,7 @@ jobs:
   # ----------------------------------------------------------------------
   # HUB
   # ----------------------------------------------------------------------
-  hub:
+  docker:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       # checkout source code
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # calculate some variables that are used later
       - name: version information

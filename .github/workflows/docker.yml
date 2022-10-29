@@ -164,7 +164,7 @@ jobs:
           platforms: "linux/amd64,linux/arm64"
           file: Dockerfile.${{ matrix.name }}
           cache-from: type=gha,scope=$GITHUB_REF_NAME-${{ matrix.name }}
-          cache-to: type=gha,,scope=$GITHUB_REF_NAME-${{ matrix.name }},mode=max
+          cache-to: type=gha,scope=$GITHUB_REF_NAME-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}
 
       # update README at DockerHub

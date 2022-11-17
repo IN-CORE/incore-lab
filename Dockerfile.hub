@@ -1,8 +1,10 @@
-FROM jupyterhub/k8s-hub:0.10.6
+FROM jupyterhub/k8s-hub:1.2.0
 
+USER root
 WORKDIR /tmp/authenticator/
 COPY authenticator /tmp/authenticator/
 COPY authenticator/quota.json /etc/quota.json
 RUN pip3 install /tmp/authenticator
+USER jovyan
 
 WORKDIR /srv/jupyterhub

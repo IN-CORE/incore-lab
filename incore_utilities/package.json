@@ -37,7 +37,7 @@
     "@jupyterlab/docmanager": "^3.0.4",
     "@jupyterlab/fileeditor": "^3.0.4",
     "@jupyterlab/mainmenu": "^3.0.3",
-    "@jupyterlab/codemirror": "^3.0.3",
+    "@jupyterlab/codemirror": "^3.5.0",
     "@jupyterlab/codeeditor": "^3.0.3",
     "@jupyterlab/terminal": "^3.0.4",
     "@lumino/coreutils": "^1.5.3",

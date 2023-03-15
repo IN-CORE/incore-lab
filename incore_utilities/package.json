@@ -1,6 +1,6 @@
 {
   "name": "incore_utilities",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "customized menu and login to redirect to incore webapp",
   "keywords": [
     "jupyter",
@@ -32,12 +32,12 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^3.0.4",
-    "@jupyterlab/apputils": "^3.0.3",
+    "@jupyterlab/apputils": "^3.5.0",
     "@jupyterlab/launcher": "^3.0.3",
     "@jupyterlab/docmanager": "^3.0.4",
     "@jupyterlab/fileeditor": "^3.0.4",
     "@jupyterlab/mainmenu": "^3.0.3",
-    "@jupyterlab/codemirror": "^3.0.3",
+    "@jupyterlab/codemirror": "^3.5.0",
     "@jupyterlab/codeeditor": "^3.0.3",
     "@jupyterlab/terminal": "^3.0.4",
     "@lumino/coreutils": "^1.5.3",

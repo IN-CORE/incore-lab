@@ -1,0 +1,67 @@
+FROM jupyterhub/singleuser:1.5.0
+
+# install packages
+USER root
+RUN apt-get -qq update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    zip unzip \
+    gdal-bin \
+    libspatialindex-dev \
+    nano \
+    vim-tiny \
+    lsof && \
+  rm -rf /var/lib/apt/lists/*
+USER $NB_USER
+
+# install extensions, use umask 0 to make sure permissions are correct
+RUN umask 0 && \
+  jupyter labextension install \
+      jupyter-leaflet \
+      @jupyter-widgets/jupyterlab-manager \
+      jupyter-matplotlib
+      # @jupyterlab/fasta-extension \
+      # @jupyterlab/vega2-extension
+      # @jupyterlab/geojson-extension
+
+# install incore data fragility viewer
+# COPY --chown=$NB_USER:0 incore_utilities/ /tmp/incore_utilities/
+# RUN umask 0 && \
+#   echo "install incore data fragility viewer" && \
+#   cd /tmp/incore_utilities && \
+#   npm install && \
+#   npm run clean && \
+#   npm run build && \
+#   jupyter labextension install . --no-build && \
+#   jupyter labextension link . && \
+#   cd && \
+#   rm -rf /tmp/npm* /tmp/v8* /tmp/incore_utilities
+
+# IN-CORE variables, set these to control versions to be installed
+# use --build-arg CHANNEL=in-core/label/rc to install a RC version
+ARG CHANNEL="in-core"
+ARG PYINCORE="1.9.0"
+ARG PYINCORE_VIZ="1.8.1"
+ARG PYINCORE_DATA="0.6.0"
+ARG INCORE="4.0.0"
+
+# store versions installed as environment variables
+ENV INCORE=${INCORE} \
+    PYINCORE=${PYINCORE} \
+    PYINCORE_VIZ=${PYINCORE_VIZ} \
+    PYINCORE_DATA=${PYINCORE_DATA}
+
+# install pyincore, pyincore-viz and other conda packages
+# mamba files installed will now have rw for others. Use find to collect
+# names of files installed and chane permissions.
+RUN umask 0 && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
+  conda config --add channels in-core && \
+  mamba install -c ${CHANNEL} -y \
+     pyincore=${PYINCORE} \
+     pyincore-viz=${PYINCORE_VIZ} \
+     pyincore-data=${PYINCORE_DATA} && \
+  mamba clean --yes --all --force-pkgs-dirs && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
+  comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
+  rm -f /tmp/oldfiles /tmp/newfiles

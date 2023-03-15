@@ -18,24 +18,24 @@ USER $NB_USER
 RUN umask 0 && \
   jupyter labextension install \
       jupyter-leaflet \
-      @jupyterlab/fasta-extension \
-      @jupyterlab/geojson-extension \
-      @jupyterlab/vega2-extension \
       @jupyter-widgets/jupyterlab-manager \
       jupyter-matplotlib
+      # @jupyterlab/fasta-extension \
+      # @jupyterlab/vega2-extension
+      # @jupyterlab/geojson-extension
 
 # install incore data fragility viewer
-COPY --chown=$NB_USER:0 incore_utilities/ /tmp/incore_utilities/
-RUN umask 0 && \
-  echo "install incore data fragility viewer" && \
-  cd /tmp/incore_utilities && \
-  npm install && \
-  npm run clean && \
-  npm run build && \
-  jupyter labextension install . --no-build && \
-  jupyter labextension link . && \
-  cd && \
-  rm -rf /tmp/npm* /tmp/v8* /tmp/incore_utilities
+# COPY --chown=$NB_USER:0 incore_utilities/ /tmp/incore_utilities/
+# RUN umask 0 && \
+#   echo "install incore data fragility viewer" && \
+#   cd /tmp/incore_utilities && \
+#   npm install && \
+#   npm run clean && \
+#   npm run build && \
+#   jupyter labextension install . --no-build && \
+#   jupyter labextension link . && \
+#   cd && \
+#   rm -rf /tmp/npm* /tmp/v8* /tmp/incore_utilities
 
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version

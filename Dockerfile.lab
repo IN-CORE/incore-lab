@@ -65,3 +65,5 @@ RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles
+
+RUN jupyter labextension update @jupyter-widgets/jupyterlab-manager

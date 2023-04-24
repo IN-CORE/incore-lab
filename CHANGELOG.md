@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Incore-lab with pyincore 1.10.0
 
-
 ## [0.6.0] - 2022-09-14
 
 ### Added

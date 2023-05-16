@@ -19,15 +19,13 @@ RUN conda create -n jupyterlab-ext cookiecutter git -y -c conda-forge && \
   echo "Activate conda envrironment jupyterlab-ext" && \
   /bin/bash -c "source activate jupyterlab-ext" && \
   echo "Install nodejs 14" && \
-  mamba install -c conda-forge -y nodejs=14  
+  mamba install -c conda-forge -y nodejs=14 && \ 
+  echo "Install jupyterlab 3.6.3" && \
+  mamba install -c conda-forge -y jupyterlab=3.6.3
 
 # install extensions, use umask 0 to make sure permissions are correct
 RUN umask 0 && \
   jupyter labextension install \
-      #jupyter-leaflet \
-      @jupyter-widgets/jupyterlab-manager@5.0.7 \ 
-      jupyter-leaflet@0.17.2 \
-      jupyter-matplotlib \ 
       @jupyterlab/fasta-extension \
       @jupyterlab/vega2-extension 
       #@jupyterlab/geojson-extension

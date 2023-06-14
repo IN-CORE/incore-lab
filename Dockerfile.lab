@@ -33,10 +33,10 @@ RUN umask 0 && \
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.10.0"
-ARG PYINCORE_VIZ="1.8.1"
+ARG PYINCORE="1.11.0"
+ARG PYINCORE_VIZ="1.8.2"
 ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.1.0"
+ARG INCORE="4.2.0"
 
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \

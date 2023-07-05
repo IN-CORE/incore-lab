@@ -15,19 +15,17 @@ RUN apt-get -qq update && apt-get install -y --no-install-recommends \
 
 USER $NB_USER
 
-RUN conda create -n jupyterlab-ext cookiecutter git -y -c conda-forge && \
-  echo "Activate conda envrironment jupyterlab-ext" && \
-  /bin/bash -c "source activate jupyterlab-ext" && \
+
+RUN echo "Install cookiecutter and git" && \
+  conda install -c conda-forge cookiecutter git -y && \
   echo "Install nodejs 14" && \
-  mamba install -c conda-forge -y nodejs=14 && \ 
-  echo "Install jupyterlab 3.6.3" && \
-  mamba install -c conda-forge -y jupyterlab=3.6.3
+  mamba install -c conda-forge -y nodejs=14
 
 # install extensions, use umask 0 to make sure permissions are correct
 RUN umask 0 && \
   jupyter labextension install \
       @jupyterlab/fasta-extension \
-      @jupyterlab/vega2-extension 
+      @jupyterlab/vega2-extension
       #@jupyterlab/geojson-extension
 
 # IN-CORE variables, set these to control versions to be installed
@@ -58,4 +56,3 @@ RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles
-

@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Updated DockerFile to have JupyterLab only once saving memory [#56](https://github.com/IN-CORE/incore-lab/issues/56)
+
 ## [0.7.0] - 2023-06-14
 
 ### Changed

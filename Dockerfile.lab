@@ -51,7 +51,9 @@ RUN umask 0 && \
   mamba install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA} && \
+     pyincore-data=${PYINCORE_DATA} \
+     ipopt \
+     scip && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \

@@ -31,10 +31,10 @@ RUN umask 0 && \
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.11.0"
-ARG PYINCORE_VIZ="1.8.2"
+ARG PYINCORE="1.12.0"
+ARG PYINCORE_VIZ="1.8.3"
 ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.2.0"
+ARG INCORE="4.3.0"
 
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \
@@ -51,7 +51,9 @@ RUN umask 0 && \
   mamba install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA} && \
+     pyincore-data=${PYINCORE_DATA} \
+     ipopt \
+     scip && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \

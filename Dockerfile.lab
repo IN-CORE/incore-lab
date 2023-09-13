@@ -1,6 +1,5 @@
-FROM jupyterhub/singleuser:1.5.0
+FROM jupyterhub/singleuser:4.0
 
-# install packages
 USER root
 RUN apt-get -qq update && apt-get install -y --no-install-recommends \
     curl \
@@ -15,27 +14,15 @@ RUN apt-get -qq update && apt-get install -y --no-install-recommends \
 
 USER $NB_USER
 
-
-RUN echo "Install cookiecutter and git" && \
-  conda install -c conda-forge cookiecutter git -y && \
-  echo "Install nodejs 14" && \
-  mamba install -c conda-forge -y nodejs=14
-
-# install extensions, use umask 0 to make sure permissions are correct
-RUN umask 0 && \
-  jupyter labextension install \
-      @jupyterlab/fasta-extension \
-      @jupyterlab/vega2-extension
-      #@jupyterlab/geojson-extension
-
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.11.0"
-ARG PYINCORE_VIZ="1.8.2"
+ARG PYINCORE="1.12.0"
+ARG PYINCORE_VIZ="1.8.3"
 ARG PYINCORE_DATA="0.6.0"
 ARG INCORE="4.2.0"
 
+# No longer installing extensions and ipyleaflet is installed with incore-viz
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \
     PYINCORE=${PYINCORE} \
@@ -48,7 +35,7 @@ ENV INCORE=${INCORE} \
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
   conda config --add channels in-core && \
-  mamba install -c ${CHANNEL} -y \
+  conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \

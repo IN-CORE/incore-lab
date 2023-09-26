@@ -68,6 +68,12 @@ class CustomTokenAuthenticator(Authenticator):
         help="the user role for incore jupyterhub authenticator"
     )
 
+    space_service_url = Unicode(
+        os.environ.get('SPACE_SERVICE_URL', ''),
+        config=True,
+        help="the internal space service url"
+    )
+
     quotas = None
 
     def get_handlers(self, app):
@@ -186,38 +192,23 @@ class CustomTokenAuthenticator(Authenticator):
         # TODO need to store the parameters in a config that can be retrieved
         #      one option is to put this in the frontend and all applications
         #      can read it from there.
-        if not self.quotas:
-            try:
-                url = "/space/api/allocations"  # assume same hostname?
+        try:
+            url = self.space_service_url + "/allocations"
 
-                # Define the headers
-                headers = {
-                    "x-auth-userinfo": {"preferred_username":user.name},
-                    # TODO find a way to get user group not the jupyter lab auth group;
-                    # TODO but it doens't matter to the endpoint
-                    "x-auth-usergroup": {"groups": [self.auth_group]}
-                }
+            # Define the headers
+            headers = {
+                "x-auth-userinfo": {"preferred_username":user.name},
+                "x-auth-usergroup": {"groups": []}
+            }
 
-                resp = requests.get(url, headers=headers)
-                if resp.status_code == 200:
-                    self.quotas = resp.json()
-                else:
-                    self.log.exception(f"Request failed with status code: {resp.status_code}")
-                    self.quotas = {}
+            resp = requests.get(url, headers=headers)
+            if resp.status_code == 200 and "incore_lab" in resp.json():
+                return resp.json()["incore_lab"]
+            else:
+                self.log.exception(f"Request failed with status code: {resp.status_code}")
 
-            except:
-                self.log.exception("Could not load quota")
-                self.quotas = {}
-
-        if "users" in self.quotas and user.name in self.quotas["users"]:
-            return self.quotas["users"][user.name]
-        if "groups" in self.quotas:
-            for group, quota in sorted(self.quotas["groups"].items(), key=lambda x: x[1].get("weight", 0), reverse=True):
-                if group in auth_state["groups"]:
-                    return quota
-        if "default" in self.quotas:
-            return self.quotas["default"]
-
+        except:
+            self.log.exception("Could not load quota")
         # default quotas
         return { "cpu": [ 1, 2 ], "mem": [ 2, 4 ], "disk": 4, "service": [100, 2]}
 

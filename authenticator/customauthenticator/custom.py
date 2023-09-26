@@ -8,7 +8,7 @@ from jupyterhub.auth import Authenticator
 from jupyterhub.handlers import LoginHandler, LogoutHandler
 from traitlets import Unicode
 from tornado import web
-
+import requests
 
 class CustomTokenAuthenticator(Authenticator):
     """
@@ -188,7 +188,22 @@ class CustomTokenAuthenticator(Authenticator):
         #      can read it from there.
         if not self.quotas:
             try:
-                self.quotas = json.load(open("/etc/quota.json"))
+                url = "/space/api/allocations"  # assume same hostname?
+
+                # Define the headers
+                headers = {
+                    "x-auth-userinfo": {"preferred_username":user.name},
+                    # TODO find a way to get user group
+                    "x-auth-usergroup": {"groups": ["incore_user", "incore_coe", "incore_admin"]}
+                }
+
+                resp = requests.get(url, headers=headers)
+                if resp.status_code == 200:
+                    self.quotas = resp.json()
+                else:
+                    self.log.exception(f"Request failed with status code: {resp.status_code}")
+                    self.quotas = {}
+
             except:
                 self.log.exception("Could not load quota")
                 self.quotas = {}

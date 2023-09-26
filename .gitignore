@@ -11,3 +11,4 @@ user.json
 jupyterhub.sqlite
 jupyterhub_cookie_secret
 *.pem
+.DS_Store

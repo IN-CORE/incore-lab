@@ -193,8 +193,9 @@ class CustomTokenAuthenticator(Authenticator):
                 # Define the headers
                 headers = {
                     "x-auth-userinfo": {"preferred_username":user.name},
-                    # TODO find a way to get user group
-                    "x-auth-usergroup": {"groups": ["incore_user", "incore_coe", "incore_admin"]}
+                    # TODO find a way to get user group not the jupyter lab auth group;
+                    # TODO but it doens't matter to the endpoint
+                    "x-auth-usergroup": {"groups": [self.auth_group]}
                 }
 
                 resp = requests.get(url, headers=headers)

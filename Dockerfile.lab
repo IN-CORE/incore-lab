@@ -1,4 +1,4 @@
-FROM jupyterhub/singleuser:4.0
+FROM jupyterhub/singleuser:4.0.2
 
 USER root
 RUN apt-get -qq update && apt-get install -y --no-install-recommends \
@@ -22,7 +22,6 @@ ARG PYINCORE_VIZ="1.8.3"
 ARG PYINCORE_DATA="0.6.0"
 ARG INCORE="4.2.0"
 
-# No longer installing extensions and ipyleaflet is installed with incore-viz
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \
     PYINCORE=${PYINCORE} \
@@ -38,7 +37,7 @@ RUN umask 0 && \
   conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA} && \
+     pyincore-data=${PYINCORE_DATA}  && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Updated 
-- Updated Dockerfile to latest version 
+- Updated Dockerfiles for hub and lab to latest version 
 
 
 ## [0.8.0] - 2023-08-16

@@ -20,13 +20,17 @@ ARG CHANNEL="in-core"
 ARG PYINCORE="1.12.0"
 ARG PYINCORE_VIZ="1.8.3"
 ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.2.0"
+ARG INCORE="4.5.0"
 
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \
     PYINCORE=${PYINCORE} \
     PYINCORE_VIZ=${PYINCORE_VIZ} \
     PYINCORE_DATA=${PYINCORE_DATA}
+
+# Installing libmamba solver
+RUN conda install -n base conda-libmamba-solver
+
 
 # install pyincore, pyincore-viz and other conda packages
 # mamba files installed will now have rw for others. Use find to collect
@@ -37,8 +41,9 @@ RUN umask 0 && \
   conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA}  && \
-  mamba clean --yes --all --force-pkgs-dirs && \
+     pyincore-data=${PYINCORE_DATA}  \
+     --solver=libmamba
+RUN conda clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles

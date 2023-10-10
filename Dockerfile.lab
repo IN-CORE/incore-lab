@@ -1,6 +1,5 @@
-FROM jupyterhub/singleuser:1.5.0
+FROM jupyterhub/singleuser:4.0.2
 
-# install packages
 USER root
 RUN apt-get -qq update && apt-get install -y --no-install-recommends \
     curl \
@@ -15,26 +14,13 @@ RUN apt-get -qq update && apt-get install -y --no-install-recommends \
 
 USER $NB_USER
 
-
-RUN echo "Install cookiecutter and git" && \
-  conda install -c conda-forge cookiecutter git -y && \
-  echo "Install nodejs 14" && \
-  mamba install -c conda-forge -y nodejs=14
-
-# install extensions, use umask 0 to make sure permissions are correct
-RUN umask 0 && \
-  jupyter labextension install \
-      @jupyterlab/fasta-extension \
-      @jupyterlab/vega2-extension
-      #@jupyterlab/geojson-extension
-
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
 ARG PYINCORE="1.12.0"
 ARG PYINCORE_VIZ="1.8.3"
 ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.3.0"
+ARG INCORE="4.5.0"
 
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \
@@ -42,19 +28,18 @@ ENV INCORE=${INCORE} \
     PYINCORE_VIZ=${PYINCORE_VIZ} \
     PYINCORE_DATA=${PYINCORE_DATA}
 
+
 # install pyincore, pyincore-viz and other conda packages
 # mamba files installed will now have rw for others. Use find to collect
 # names of files installed and chane permissions.
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
   conda config --add channels in-core && \
-  mamba install -c ${CHANNEL} -y \
+  conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA} \
-     ipopt \
-     scip && \
-  mamba clean --yes --all --force-pkgs-dirs && \
+     pyincore-data=${PYINCORE_DATA}  && \
+  conda clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles

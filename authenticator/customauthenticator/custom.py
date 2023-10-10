@@ -202,10 +202,10 @@ class CustomTokenAuthenticator(Authenticator):
             }
 
             resp = requests.get(url, headers=headers)
-            if resp.status_code == 200 and "incore_lab" in resp.json():
+            if resp.status_code == 200 and "incoreLab" in resp.json():
                 self.log.info(f"Quota for current user:{user.name}")
-                self.log.info(json.dumps(resp.json()["incore_lab"]))
-                return resp.json()["incore_lab"]
+                self.log.info(json.dumps(resp.json()["incoreLab"]))
+                return resp.json()["incoreLab"]
             else:
                 self.log.exception(f"Request failed with status code: {resp.status_code}")
 

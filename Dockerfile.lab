@@ -28,9 +28,6 @@ ENV INCORE=${INCORE} \
     PYINCORE_VIZ=${PYINCORE_VIZ} \
     PYINCORE_DATA=${PYINCORE_DATA}
 
-# Installing libmamba solver
-RUN conda install -n base conda-libmamba-solver
-
 
 # install pyincore, pyincore-viz and other conda packages
 # mamba files installed will now have rw for others. Use find to collect

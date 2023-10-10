@@ -8,7 +8,7 @@ from jupyterhub.auth import Authenticator
 from jupyterhub.handlers import LoginHandler, LogoutHandler
 from traitlets import Unicode
 from tornado import web
-
+import requests
 
 class CustomTokenAuthenticator(Authenticator):
     """
@@ -66,6 +66,12 @@ class CustomTokenAuthenticator(Authenticator):
         os.environ.get('AUTH_ROLE', ''),
         config=True,
         help="the user role for incore jupyterhub authenticator"
+    )
+
+    space_service_url = Unicode(
+        os.environ.get('SPACE_SERVICE_URL', ''),
+        config=True,
+        help="the internal space service url"
     )
 
     quotas = None
@@ -186,22 +192,25 @@ class CustomTokenAuthenticator(Authenticator):
         # TODO need to store the parameters in a config that can be retrieved
         #      one option is to put this in the frontend and all applications
         #      can read it from there.
-        if not self.quotas:
-            try:
-                self.quotas = json.load(open("/etc/quota.json"))
-            except:
-                self.log.exception("Could not load quota")
-                self.quotas = {}
+        try:
+            url = self.space_service_url + "/space/api/allocations"
 
-        if "users" in self.quotas and user.name in self.quotas["users"]:
-            return self.quotas["users"][user.name]
-        if "groups" in self.quotas:
-            for group, quota in sorted(self.quotas["groups"].items(), key=lambda x: x[1].get("weight", 0), reverse=True):
-                if group in auth_state["groups"]:
-                    return quota
-        if "default" in self.quotas:
-            return self.quotas["default"]
+            # Define the headers
+            headers = {
+                "x-auth-userinfo": json.dumps({"preferred_username":user.name}),
+                "x-auth-usergroup": json.dumps({"groups": []})
+            }
 
+            resp = requests.get(url, headers=headers)
+            if resp.status_code == 200 and "incoreLab" in resp.json():
+                self.log.info(f"Quota for current user:{user.name}")
+                self.log.info(json.dumps(resp.json()["incoreLab"]))
+                return resp.json()["incoreLab"]
+            else:
+                self.log.exception(f"Request failed with status code: {resp.status_code}")
+
+        except:
+            self.log.exception("Could not load quota")
         # default quotas
         return { "cpu": [ 1, 2 ], "mem": [ 2, 4 ], "disk": 4, "service": [100, 2]}
 

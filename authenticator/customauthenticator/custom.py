@@ -197,12 +197,14 @@ class CustomTokenAuthenticator(Authenticator):
 
             # Define the headers
             headers = {
-                "x-auth-userinfo": {"preferred_username":user.name},
-                "x-auth-usergroup": {"groups": []}
+                "x-auth-userinfo": json.dumps({"preferred_username":user.name}),
+                "x-auth-usergroup": json.dumps({"groups": []})
             }
 
             resp = requests.get(url, headers=headers)
             if resp.status_code == 200 and "incore_lab" in resp.json():
+                self.log.info(f"Quota for current user:{user.name}")
+                self.log.info(json.dumps(resp.json()["incore_lab"]))
                 return resp.json()["incore_lab"]
             else:
                 self.log.exception(f"Request failed with status code: {resp.status_code}")

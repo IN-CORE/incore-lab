@@ -41,8 +41,8 @@ RUN umask 0 && \
   conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-    pyincore-data=${PYINCORE_DATA}  && \
-  mamba clean --yes --all --force-pkgs-dirs && \
+     pyincore-data=${PYINCORE_DATA}  && \
+  conda clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles

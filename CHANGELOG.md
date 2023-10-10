@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Read Quota from incore-service allocation endpoint [#66](https://github.com/IN-CORE/incore-lab/issues/66)
+- Updated Dockerfiles for hub and lab to latest version 
 
 ## [0.8.0] - 2023-08-16
 
 ### Added
 - Ipopt and Scip solvers are included as a default [#61](https://github.com/IN-CORE/incore-lab/issues/61)
+
 
 ### Changed
 - Updated DockerFile to have JupyterLab only once saving memory [#56](https://github.com/IN-CORE/incore-lab/issues/56)

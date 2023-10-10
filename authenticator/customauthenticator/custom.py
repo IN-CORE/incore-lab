@@ -193,7 +193,7 @@ class CustomTokenAuthenticator(Authenticator):
         #      one option is to put this in the frontend and all applications
         #      can read it from there.
         try:
-            url = self.space_service_url + "/allocations"
+            url = self.space_service_url + "space/api/allocations"
 
             # Define the headers
             headers = {

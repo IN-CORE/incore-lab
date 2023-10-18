@@ -5,16 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.0.0] - 2023-10-11
 
 ### Updated
 
-- Updated Dockerfiles for hub and lab to use version 3.0.2 and version 4.0.2 respectively
+- Updated Dockerfile for hub to use version 3.0.2 [#57](https://github.com/IN-CORE/incore-lab/issues/57)
+- Updated Dockerfile for lab to use version 4.0.2 respectively [#56]( https://github.com/IN-CORE/incore-lab/issues/56)
 
 ### Changed
 
 - Read Quota from incore-service allocation endpoint [#66](https://github.com/IN-CORE/incore-lab/issues/66)
-- Updated Dockerfiles for hub and lab to latest version
 
 ## [0.8.0] - 2023-08-16
 

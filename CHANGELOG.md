@@ -5,12 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.0] - 2023-11-08
+
+### Updated
+- Pyincore to 1.14.0 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
+- Pyincore-viz to 1.8.4 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
+
 ## [1.0.0] - 2023-10-11
 
 ### Updated
 
-- Updated Dockerfile for hub to use version 3.0.2 [#57](https://github.com/IN-CORE/incore-lab/issues/57)
-- Updated Dockerfile for lab to use version 4.0.2 respectively [#56]( https://github.com/IN-CORE/incore-lab/issues/56)
+- Dockerfile for hub to use version 3.0.2 [#57](https://github.com/IN-CORE/incore-lab/issues/57)
+- Dockerfile for lab to use version 4.0.2 respectively [#56]( https://github.com/IN-CORE/incore-lab/issues/56)
 
 ### Changed
 
@@ -24,7 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- Updated DockerFile to have JupyterLab only once saving memory [#56](https://github.com/IN-CORE/incore-lab/issues/56)
+- DockerFile to have JupyterLab only once saving memory [#56](https://github.com/IN-CORE/incore-lab/issues/56)
 
 ## [0.7.0] - 2023-06-14
 

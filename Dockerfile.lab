@@ -20,7 +20,7 @@ ARG CHANNEL="in-core"
 ARG PYINCORE="1.14.0"
 ARG PYINCORE_VIZ="1.8.4"
 ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.6.0"
+ARG INCORE="4.7.0"
 
 # store versions installed as environment variables
 ENV INCORE=${INCORE} \

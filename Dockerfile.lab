@@ -28,17 +28,21 @@ ENV INCORE=${INCORE} \
     PYINCORE_VIZ=${PYINCORE_VIZ} \
     PYINCORE_DATA=${PYINCORE_DATA}
 
+# Set conda channels and solver
+RUN conda config --add channels conda-forge && \
+    conda config --add channels in-core && \
+    conda install -c conda-forge conda-libmamba-solver && \
+    conda config --set solver libmamba
 
 # install pyincore, pyincore-viz and other conda packages
 # mamba files installed will now have rw for others. Use find to collect
 # names of files installed and chane permissions.
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
-  conda config --add channels in-core && \
   conda install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA}  && \
+     pyincore-data=${PYINCORE_DATA} && \
   conda clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \

@@ -163,7 +163,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           file: Dockerfile.${{ matrix.name }}
           cache-from: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }}
           cache-to: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }},mode=max

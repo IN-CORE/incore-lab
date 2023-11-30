@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - 
+
+### Changed
+- DockerFile now uses libmamba installation to install python dependencies and github workflow is not run on ARM architecture [#75](https://github.com/IN-CORE/incore-lab/issues/75)
+
 ## [1.1.0] - 2023-11-08
 
 ### Changed

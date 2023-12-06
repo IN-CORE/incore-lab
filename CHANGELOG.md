@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - 
 
+### Added
+- Config file for controlling component versions and github action [#86](https://github.com/IN-CORE/incore-lab/issues/86)
+
 ### Changed
 - DockerFile now uses libmamba installation to install python dependencies and github workflow is not run on ARM architecture [#75](https://github.com/IN-CORE/incore-lab/issues/75)
 

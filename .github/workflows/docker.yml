@@ -40,7 +40,7 @@ jobs:
       - name: component version information
         run: |
           CHANNEL=$(cat config.yml | grep "Channel" | head -1 | awk -F ": " '{print $2}' | sed 's/["[:space:]]//g')
-          INCORE_VERSION=$(cat config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
+          INCORE_VERSION=$(cat config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]_]//g" | sed "s/-//g")
           PYINCORE_VERSION=$(cat config.yml | grep "PyIncore" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
           PYINCORE_VIZ_VERSION=$(cat config.yml | grep "PyIncore-Viz" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
           PYINCORE_DATA_VERSION=$(cat config.yml | grep "PyIncore-Data" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")

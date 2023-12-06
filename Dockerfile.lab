@@ -35,6 +35,12 @@ RUN conda config --add channels conda-forge && \
     conda install -c conda-forge conda-libmamba-solver && \
     conda config --set solver libmamba
 
+RUN echo ${CHANNEL} && \
+    echo ${PYINCORE} && \
+    echo ${PYINCORE_VIZ} && \
+    echo ${PYINCORE_DATA} && \
+    echo ${INCORE}
+
 # install pyincore, pyincore-viz and other conda packages
 # mamba files installed will now have rw for others. Use find to collect
 # names of files installed and chane permissions.

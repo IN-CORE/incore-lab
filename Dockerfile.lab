@@ -17,33 +17,33 @@ USER $NB_USER
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.14.0"
-ARG PYINCORE_VIZ="1.8.4"
-ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.7.0"
+ARG PYINCORE="latest"
+ARG PYINCORE_VIZ="latest"
+ARG PYINCORE_DATA="latest"
+ARG INCORE="latest"
 
 # store versions installed as environment variables
-ENV INCORE=${INCORE} \
-    PYINCORE=${PYINCORE} \
-    PYINCORE_VIZ=${PYINCORE_VIZ} \
-    PYINCORE_DATA=${PYINCORE_DATA}
+ENV INCORE=$INCORE \
+    PYINCORE=$PYINCORE \
+    PYINCORE_VIZ=$PYINCORE_VIZ \
+    PYINCORE_DATA=$PYINCORE_DATA \
+    CHANNEL=$CHANNEL
 
-# Set conda channels and solver
-RUN conda config --add channels conda-forge && \
-    conda config --add channels in-core && \
-    conda install -c conda-forge conda-libmamba-solver && \
-    conda config --set solver libmamba
+# Install Mamba from Conda-Forge
+RUN conda install -c conda-forge mamba
 
-# install pyincore, pyincore-viz and other conda packages
-# mamba files installed will now have rw for others. Use find to collect
-# names of files installed and chane permissions.
+# Set mamba channels
+RUN mamba config --add channels conda-forge && \
+    mamba config --add channels in-core
+
+# Install pyincore, pyincore-viz and other mamba packages
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
-  conda install -c ${CHANNEL} -y \
+  mamba install -c ${CHANNEL} -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \
-  conda clean --yes --all --force-pkgs-dirs && \
+  mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
-  comm -13 /tmp/oldfiles /tmp/newfiles | xargs  -d '\n' -n 100 chmod a+w && \
+  comm -13 /tmp/oldfiles /tmp/newfiles | xargs -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles

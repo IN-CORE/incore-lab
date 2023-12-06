@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased] - 
 
 ### Changed
-- DockerFile now uses libmamba installation to install python dependencies and github workflow is not run on ARM architecture [#75](https://github.com/IN-CORE/incore-lab/issues/75)
+- DockerFile now uses mamba to install python dependencies [#84](https://github.com/IN-CORE/incore-lab/issues/84)
+- Github workflow is not run on ARM architecture [#75](https://github.com/IN-CORE/incore-lab/issues/75)
 
 ## [1.1.0] - 2023-11-08
 

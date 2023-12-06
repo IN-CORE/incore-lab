@@ -23,11 +23,11 @@ ARG PYINCORE_DATA="latest"
 ARG INCORE="latest"
 
 # store versions installed as environment variables
-ENV INCORE=${INCORE} \
-    PYINCORE=${PYINCORE} \
-    PYINCORE_VIZ=${PYINCORE_VIZ} \
-    PYINCORE_DATA=${PYINCORE_DATA} \
-    CHANNEL=${CHANNEL}
+ENV INCORE=$INCORE \
+    PYINCORE=$PYINCORE \
+    PYINCORE_VIZ=$PYINCORE_VIZ \
+    PYINCORE_DATA=$PYINCORE_DATA \
+    CHANNEL=$CHANNEL
 
 # Set conda channels and solver
 RUN conda config --add channels conda-forge && \

@@ -37,24 +37,18 @@ jobs:
       - uses: actions/checkout@v3
 
       # calculate component version information
-      - name: Component version information
+      - name: component version information
         run: |
-          CHANNEL=$(awk '/Channel/ {gsub(/"/, "", $2); print $2}' config.yml)
-          INCORE_VERSION=$(awk '/INCORE_VERSION/ {gsub(/"/, "", $2); print $2}' config.yml)
+          CHANNEL=$(cat config.yml | grep "Channel" | head -1 | awk -F ": " '{print $2}' | sed 's/["[:space:]]//g')
+          INCORE_VERSION=$(cat config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]_]//g" | sed "s/-//g")
           PYINCORE_VERSION=$(awk '/PyIncore/ {gsub(/"/, "", $2); print $2}' config.yml)
           PYINCORE_VIZ_VERSION=$(awk '/PyIncore-Viz/ {gsub(/"/, "", $2); print $2}' config.yml)
           PYINCORE_DATA_VERSION=$(awk '/PyIncore-Data/ {gsub(/"/, "", $2); print $2}' config.yml)
-
-          # Sanitize the version strings
-          SANITIZED_PYINCORE_VIZ_VERSION=$(echo "$PYINCORE_VIZ_VERSION" | tr -cd '[:alnum:]._-')
-          SANITIZED_PYINCORE_DATA_VERSION=$(echo "$PYINCORE_DATA_VERSION" | tr -cd '[:alnum:]._-')
-
           echo "CHANNEL=${CHANNEL}" >> $GITHUB_ENV
           echo "INCORE_VERSION=${INCORE_VERSION}" >> $GITHUB_ENV  
           echo "PYINCORE_VERSION=${PYINCORE_VERSION}" >> $GITHUB_ENV
-          echo "PYINCORE_VIZ_VERSION=${SANITIZED_PYINCORE_VIZ_VERSION}" >> $GITHUB_ENV
-          echo "PYINCORE_DATA_VERSION=${SANITIZED_PYINCORE_DATA_VERSION}" >> $GITHUB_ENV
-      
+#          echo "PYINCORE_VIZ_VERSION=${PYINCORE_VIZ_VERSION}" >> $GITHUB_ENV
+#          echo "PYINCORE_DATA_VERSION=${PYINCORE_DATA_VERSION}" >> $GITHUB_ENV
 
       # calculate branch version information
       - name: version information

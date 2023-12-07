@@ -17,16 +17,17 @@ USER $NB_USER
 # IN-CORE variables, set these to control versions to be installed
 # use --build-arg CHANNEL=in-core/label/rc to install a RC version
 ARG CHANNEL="in-core"
-ARG PYINCORE="1.14.0"
-ARG PYINCORE_VIZ="1.8.4"
-ARG PYINCORE_DATA="0.6.0"
-ARG INCORE="4.7.0"
+ARG PYINCORE="latest"
+ARG PYINCORE_VIZ="latest"
+ARG PYINCORE_DATA="latest"
+ARG INCORE="latest"
 
 # store versions installed as environment variables
-ENV INCORE=${INCORE} \
-    PYINCORE=${PYINCORE} \
-    PYINCORE_VIZ=${PYINCORE_VIZ} \
-    PYINCORE_DATA=${PYINCORE_DATA}
+ENV INCORE=$INCORE \
+    PYINCORE=$PYINCORE \
+    PYINCORE_VIZ=$PYINCORE_VIZ \
+    PYINCORE_DATA=$PYINCORE_DATA \
+    CHANNEL=$CHANNEL
 
 # Install Mamba from Conda-Forge
 RUN conda install -c conda-forge mamba

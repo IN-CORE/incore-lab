@@ -44,6 +44,9 @@ jobs:
           PYINCORE_VERSION=$(awk '/PyIncore/ {gsub(/"/, "", $2); print $2}' config.yml)
           PYINCORE_VIZ_VERSION=$(awk '/PyIncore-Viz/ {gsub(/"/, "", $2); print $2}' config.yml)
           PYINCORE_DATA_VERSION=$(awk '/PyIncore-Data/ {gsub(/"/, "", $2); print $2}' config.yml)
+
+      - name: add versions to env variable
+        run: |
           echo "CHANNEL=${CHANNEL}" >> $GITHUB_ENV
           echo "INCORE_VERSION=${INCORE_VERSION}" >> $GITHUB_ENV  
           echo "PYINCORE_VERSION=${PYINCORE_VERSION}" >> $GITHUB_ENV

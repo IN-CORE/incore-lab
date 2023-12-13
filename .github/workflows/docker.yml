@@ -87,7 +87,7 @@ jobs:
             if [ "${{ matrix.name }}" == "hub" ]; then
               version=$(grep '"version"' incore_utilities/package.json | sed 's/.*"\([0-9\.]*\)", *$/\1/')
             else
-              version=$(grep "ARG INCORE=" Dockerfile.lab | sed 's/.*="\([0-9\.]*\)"$/\1/g')
+              version=$(awk '/^## / { print tolower($2) }' CHANGELOG.md | head -1 | sed 's/^.//;s/.$//')
             fi
             tags="latest"
             oldversion=""
@@ -137,10 +137,10 @@ jobs:
         run: | 
           echo "${{ env.TAGS }}"
           echo "${{ env.CHANNEL }}"
-          echo "${{ env.INCORE_VERSION }}"
-          echo "${{ env.PYINCORE_VERSION }}"
-          echo "${{ env.PYINCORE_VIZ_VERSION }}"
-          echo "${{ env.PYINCORE_DATA_VERSION }}"
+          echo "Incore: ${{ env.INCORE_VERSION }}"
+          echo "PyIncore: ${{ env.PYINCORE_VERSION }}"
+          echo "PyIncore-Viz: ${{ env.PYINCORE_VIZ_VERSION }}"
+          echo "PyIncore-Data: ${{ env.PYINCORE_DATA_VERSION }}"
 
       # setup docker build
       - name: Set up QEMU

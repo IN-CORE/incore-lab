@@ -36,7 +36,21 @@ jobs:
       # checkout source code
       - uses: actions/checkout@v3
 
-      # calculate some variables that are used later
+      # calculate component version information
+      - name: component version information
+        run: |
+          CHANNEL=$(cat config.yml | grep "Channel" | head -1 | awk -F ": " '{print $2}' | sed 's/["[:space:]]//g')
+          INCORE_VERSION=$(cat config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]_]//g" | sed "s/-//g")
+          PYINCORE_VERSION=$(cat config.yml | grep "PyIncore" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
+          PYINCORE_VIZ_VERSION=$(cat config.yml | grep "PyIncore-Viz" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
+          PYINCORE_DATA_VERSION=$(cat config.yml | grep "PyIncore-Data" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]]//g" | sed "s/-//g")
+          echo "CHANNEL=${CHANNEL}" >> $GITHUB_ENV
+          echo "INCORE_VERSION=${INCORE_VERSION}" >> $GITHUB_ENV  
+          echo "PYINCORE_VERSION=${PYINCORE_VERSION}" >> $GITHUB_ENV
+          echo "PYINCORE_VIZ_VERSION=${PYINCORE_VIZ_VERSION}" >> $GITHUB_ENV
+          echo "PYINCORE_DATA_VERSION=${PYINCORE_DATA_VERSION}" >> $GITHUB_ENV
+
+      # calculate branch version information
       - name: version information
         run: |
           echo ${GITHUB_REF_NAME}
@@ -118,6 +132,16 @@ jobs:
           echo "VERSION=${version}" >> $GITHUB_ENV
           echo "TAGS=${push_tags}" >> $GITHUB_ENV
 
+      # print version information
+      - name: Print Version information
+        run: | 
+          echo "${{ env.TAGS }}"
+          echo "${{ env.CHANNEL }}"
+          echo "Incore: ${{ env.INCORE_VERSION }}"
+          echo "PyIncore: ${{ env.PYINCORE_VERSION }}"
+          echo "PyIncore-Viz: ${{ env.PYINCORE_VIZ_VERSION }}"
+          echo "PyIncore-Data: ${{ env.PYINCORE_DATA_VERSION }}"
+
       # setup docker build
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -163,11 +187,17 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           file: Dockerfile.${{ matrix.name }}
           cache-from: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }}
           cache-to: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}
+          build-args: |
+            INCORE=${{ env.INCORE_VERSION }}
+            PYINCORE=${{ env.PYINCORE_VERSION }}
+            PYINCORE_VIZ=${{ env.PYINCORE_VIZ_VERSION }}
+            PYINCORE_DATA=${{ env.PYINCORE_DATA_VERSION }}
+            CHANNEL=${{ env.CHANNEL }}
 
       # update README at DockerHub
 #      - name: Docker Hub Description

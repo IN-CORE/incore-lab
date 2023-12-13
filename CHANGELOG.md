@@ -5,20 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0] - 2023-12-13 
+
+### Added
+
+- Config file for controlling component versions and github action [#86](https://github.com/IN-CORE/incore-lab/issues/86)
+
+### Changed
+- DockerFile now uses mamba to install python dependencies [#84](https://github.com/IN-CORE/incore-lab/issues/84)
+- Github Action workflow is no longer run on ARM architecture [#75](https://github.com/IN-CORE/incore-lab/issues/75)
+
+
 ## [1.1.0] - 2023-11-08
 
-### Updated
-- Pyincore to 1.14.0 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
-- Pyincore-viz to 1.8.4 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
+### Changed
+
+- INCORE-Lab now uses Pyincore version 1.14.0 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
+- INCORE-Lab now uses Pyincore-viz version 1.8.4 [#76](https://github.com/IN-CORE/incore-lab/issues/76)
 
 ## [1.0.0] - 2023-10-11
 
-### Updated
+### Changed
 
 - Dockerfile for hub to use version 3.0.2 [#57](https://github.com/IN-CORE/incore-lab/issues/57)
-- Dockerfile for lab to use version 4.0.2 respectively [#56]( https://github.com/IN-CORE/incore-lab/issues/56)
+- Dockerfile for lab to use version 4.0.2 respectively [#56](https://github.com/IN-CORE/incore-lab/issues/56)
 
-### Changed
+### Added
 
 - Read Quota from incore-service allocation endpoint [#66](https://github.com/IN-CORE/incore-lab/issues/66)
 

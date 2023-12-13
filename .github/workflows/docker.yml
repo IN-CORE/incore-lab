@@ -87,7 +87,7 @@ jobs:
             if [ "${{ matrix.name }}" == "hub" ]; then
               version=$(grep '"version"' incore_utilities/package.json | sed 's/.*"\([0-9\.]*\)", *$/\1/')
             else
-              version=$(grep "ARG INCORE=" Dockerfile.lab | sed 's/.*="\([0-9\.]*\)"$/\1/g')
+              version=$(grep "ARG INCORE=" Dockerfile.lab | sed -n 's/.*="\(.*\)".*/\1/p')
             fi
             tags="latest"
             oldversion=""

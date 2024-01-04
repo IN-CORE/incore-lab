@@ -39,7 +39,7 @@ RUN mamba config --add channels conda-forge && \
 # Install pyincore, pyincore-viz and other mamba packages
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
-  mamba install -c ${CHANNEL} -y \
+  mamba install -c ${CHANNEL} -c in-core/label/rc -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \

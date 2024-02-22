@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.0] - 2024-02-22
+### Changed
+- IN-CORE release for 5.0.0 with pyincore 1.17.0 [#103](https://github.com/IN-CORE/incore-lab/issues/103)
+
 ## [1.3.0] - 2024-02-07
 ### Added
 - Github action works with RC version of components [#90](https://github.com/IN-CORE/incore-lab/issues/90)

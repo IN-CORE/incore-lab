@@ -157,7 +157,7 @@ class CustomTokenAuthenticator(Authenticator):
                                                 "cannot access incore lab. Please contact NCSA IN-CORE development team")
 
         admin = False
-        if "incore_admin" in user_groups and "incore_admin" in user_roles:
+        if "incore_admin" in user_groups or "incore_admin" in user_roles:
             admin = True
 
         self.log.info(f"username={username} logged in with uid={uid}")

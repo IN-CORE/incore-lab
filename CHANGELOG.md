@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [1.6.0] - 2024-04-30
+
+### Changed
+- IN-CORE release for 5.3.1 with pyincore 1.18.1 [#112](https://github.com/IN-CORE/incore-lab/issues/112)
 
 ### Fixed
 - Error in logic to determine if user is an admin
@@ -34,6 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - IN-CORE release for 4.8.1 with pyincore 1.15.1 [#96](https://github.com/IN-CORE/incore-lab/issues/96)
+
 
 ## [1.2.0] - 2023-12-13 
 

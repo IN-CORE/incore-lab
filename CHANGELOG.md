@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.5.1] - 2024-04-10
 
 ### Changed
-- INCORE-Lab now uses Pyincore version 1.18.1[#112](https://github.com/IN-CORE/incore-lab/issues/112)
+- IN-CORE release for 5.3.1 with pyincore 1.18.1 [#112](https://github.com/IN-CORE/incore-lab/issues/112)
 
 ### Fixed
 - Error in logic to determine if user is an admin

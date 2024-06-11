@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0] - 2024-06-12
+### Changed
+- IN-CORE relase for 5.4.0 with pyincore 1.19.0 [#116](https://github.com/IN-CORE/incore-lab/issues/116)
+
 ## [1.6.0] - 2024-04-30
 
 ### Changed

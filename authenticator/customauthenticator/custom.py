@@ -138,9 +138,9 @@ class CustomTokenAuthenticator(Authenticator):
         username = resp_json[self.auth_username_key]
 
         # make sure there is a user id
-        if self.auth_uid_number_key not in resp_json.keys():
-            raise web.HTTPError(500, log_message=f"Required field {self.auth_uid_number_key} does not exist in jwt token")
-        uid = resp_json[self.auth_uid_number_key]
+        # if self.auth_uid_number_key not in resp_json.keys():
+        #     raise web.HTTPError(500, log_message=f"Required field {self.auth_uid_number_key} does not exist in jwt token")
+        # uid = resp_json[self.auth_uid_number_key]
 
         # get the groups/roles for the user
         user_groups = resp_json.get("groups", [])
@@ -160,12 +160,13 @@ class CustomTokenAuthenticator(Authenticator):
         if "incore_admin" in user_groups or "incore_admin" in user_roles:
             admin = True
 
-        self.log.info(f"username={username} logged in with uid={uid}")
+        # self.log.info(f"username={username} logged in with uid={uid}")
+        self.log.info(f"username={username} logged in")
         return {
             'name': username,
             'admin': admin,
             'auth_state': {
-                'uid': uid,
+                # 'uid': uid,
                 'groups': user_groups,
                 'roles': user_roles,
             },
@@ -221,7 +222,7 @@ class CustomTokenAuthenticator(Authenticator):
             return
 
         spawner.environment['NB_USER'] = user.name
-        spawner.environment['NB_UID'] = str(auth_state['uid'])
+        # spawner.environment['NB_UID'] = str(auth_state['uid'])
 
         quota = self.find_quota(user, auth_state)
         if "cpu" in quota:

@@ -201,8 +201,9 @@ class CustomTokenAuthenticator(Authenticator):
                 "x-auth-userinfo": json.dumps({"preferred_username":user.name}),
                 "x-auth-usergroup": json.dumps({"groups": []})
             }
-
+            print(headers)
             resp = requests.get(url, headers=headers)
+            print(resp.status_code)
             if resp.status_code == 200 and "incoreLab" in resp.json():
                 self.log.info(f"Quota for current user:{user.name}")
                 self.log.info(json.dumps(resp.json()["incoreLab"]))

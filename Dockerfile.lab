@@ -21,6 +21,7 @@ ARG PYINCORE="latest"
 ARG PYINCORE_VIZ="latest"
 ARG PYINCORE_DATA="latest"
 ARG INCORE="latest"
+ARG GEOPANDAS="0.14.4"
 
 # store versions installed as environment variables
 ENV INCORE=$INCORE \
@@ -40,6 +41,7 @@ RUN mamba config --add channels conda-forge && \
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
   mamba install -c ${CHANNEL} -c in-core/label/rc -y \
+     geopandas<=${GEOPANDAS} \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \

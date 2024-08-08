@@ -42,7 +42,7 @@ RUN mamba config --add channels conda-forge && \
 RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
   mamba install -c ${CHANNEL} -c in-core/label/rc -y \
-     geopandas<=${GEOPANDAS} \
+     geopandas=${GEOPANDAS} \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} && \

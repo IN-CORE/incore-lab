@@ -25,6 +25,7 @@ ARG GEOPANDAS="0.14.4"
 
 # store versions installed as environment variables
 ENV INCORE=$INCORE \
+    GEOPANDAS=$GEOPANDAS \
     PYINCORE=$PYINCORE \
     PYINCORE_VIZ=$PYINCORE_VIZ \
     PYINCORE_DATA=$PYINCORE_DATA \

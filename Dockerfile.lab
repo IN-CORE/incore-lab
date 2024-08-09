@@ -1,4 +1,4 @@
-FROM jupyterhub/singleuser:4.0.2
+FROM jupyterhub/singleuser:4.1
 
 USER root
 RUN apt-get -qq update && apt-get install -y --no-install-recommends \
@@ -33,8 +33,8 @@ ENV INCORE=$INCORE \
 RUN conda install -c conda-forge mamba
 
 # Set mamba channels
-RUN mamba config --add channels conda-forge && \
-    mamba config --add channels in-core
+RUN conda config --add channels conda-forge && \
+    conda config --add channels in-core
 
 # Install pyincore, pyincore-viz and other mamba packages
 RUN umask 0 && \

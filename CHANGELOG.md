@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed 
+- Updated base image forJupyterLab to 4.1 [#122](https://github.com/IN-CORE/incore-lab/issues/122)
 
 ### Changed
 - UID logic. We will no longer depend upon the uid parameter from LDAP in JWT token. [#119](https://github.com/IN-CORE/incore-lab/issues/119)

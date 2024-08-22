@@ -39,11 +39,11 @@ jobs:
       # calculate component version information
       - name: component version information
         run: |
-          CHANNEL=$(cat config.yml | grep "Channel" | head -1 | awk -F ": " '{print $2}' | sed 's/["[:space:]]//g')
-          INCORE_VERSION=$(cat config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]_]//g" | sed "s/-//g")
-          PYINCORE_VERSION=$(cat config.yml | grep "PyIncore" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
-          PYINCORE_VIZ_VERSION=$(cat config.yml | grep "PyIncore-Viz" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
-          PYINCORE_DATA_VERSION=$(cat config.yml | grep "PyIncore-Data" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
+          CHANNEL=$(cat lab/config.yml | grep "Channel" | head -1 | awk -F ": " '{print $2}' | sed 's/["[:space:]]//g')
+          INCORE_VERSION=$(cat lab/config.yml | grep "INCORE_VERSION" | head -1 | awk -F= "{print $2 }" | sed "s/[[:alpha:]|,|-|\"|:|#|[:space:]_]//g" | sed "s/-//g")
+          PYINCORE_VERSION=$(cat lab/config.yml | grep "PyIncore" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
+          PYINCORE_VIZ_VERSION=$(cat lab/config.yml | grep "PyIncore-Viz" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
+          PYINCORE_DATA_VERSION=$(cat lab/config.yml | grep "PyIncore-Data" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
           echo "CHANNEL=${CHANNEL}" >> $GITHUB_ENV
           echo "INCORE_VERSION=${INCORE_VERSION}" >> $GITHUB_ENV  
           echo "PYINCORE_VERSION=${PYINCORE_VERSION}" >> $GITHUB_ENV
@@ -84,9 +84,6 @@ jobs:
 
           # figure out the versions
           if [ "$BRANCH" == "main" ]; then
-            if [ "${{ matrix.name }}" == "hub" ]; then
-              version=$(grep '"version"' incore_utilities/package.json | sed 's/.*"\([0-9\.]*\)", *$/\1/')
-            else
               version=$(awk '/^## / { print tolower($2) }' CHANGELOG.md | head -1 | sed 's/^.//;s/.$//')
             fi
             tags="latest"
@@ -188,7 +185,7 @@ jobs:
         with:
           push: true
           platforms: "linux/amd64"
-          file: Dockerfile.${{ matrix.name }}
+          file: ${{ matrix.name }}/Dockerfile
           cache-from: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }}
           cache-to: type=gha,scope=${{ env.BRANCH }}-${{ matrix.name }},mode=max
           tags: ${{ env.TAGS }}

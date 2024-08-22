@@ -35,6 +35,8 @@ jobs:
     steps:
       # checkout source code
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # ensure full repo is checked out
 
       # calculate component version information
       - name: component version information

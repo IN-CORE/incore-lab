@@ -85,7 +85,6 @@ jobs:
           # figure out the versions
           if [ "$BRANCH" == "main" ]; then
               version=$(awk '/^## / { print tolower($2) }' CHANGELOG.md | head -1 | sed 's/^.//;s/.$//')
-            fi
             tags="latest"
             oldversion=""
             while [ "${oldversion}" != "${version}" ]; do

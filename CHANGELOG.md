@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0] - 2024-10-23
+### Changed
+- Hub containers versioning has been updated to use the changelog [#127](https://github.com/IN-CORE/incore-lab/issues/127)
+- Separated code for lab and hub using their own placeholder [#128](https://github.com/IN-CORE/incore-lab/issues/128)
+- Removed incore utilities code [#129](https://github.com/IN-CORE/incore-lab/issues/129)
+- IN-CORE releaes 5.5.0 with pyincore 1.20.0
+
 ## [1.8.0] - 2024-08-21
 ### Changed 
 - Updated base image forJupyterLab to 4.1 [#122](https://github.com/IN-CORE/incore-lab/issues/122)

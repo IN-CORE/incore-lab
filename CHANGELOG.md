@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.1] - 2025-02-20
+- Pyincore 1.21.0 for IN-CORE release 6.0.0 [#138](https://github.com/IN-CORE/incore-lab/issues/138)
+
 ## [1.9.1] - 2024-11-04
 ### Changed
 - Pyincore 1.20.1 for IN-CORE release 5.5.1 [#134](https://github.com/IN-CORE/incore-lab/issues/134)

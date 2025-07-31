@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-### [1.11.0] - 2025-07-30
+## [1.12.0] - 2025-07-31
+- Pyincore incubator for IN-CORE release 6.1.0 [#144](https://github.com/IN-CORE/incore-lab/issues/144)
+
+## [1.11.0] - 2025-07-30
 - Pyincore 1.22.0 for IN-CORE release 6.1.0 [#141](https://github.com/IN-CORE/incore-lab/issues/141)
 
 ## [1.10.1] - 2025-02-20

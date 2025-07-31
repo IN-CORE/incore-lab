@@ -45,7 +45,7 @@ RUN umask 0 && \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} \
-    pyincore-incubator=${PYINCORE_INCUBATOR} && \
+     pyincore-incubator=${PYINCORE_INCUBATOR} && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs -d '\n' -n 100 chmod a+w && \

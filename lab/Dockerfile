@@ -20,6 +20,7 @@ ARG CHANNEL="in-core"
 ARG PYINCORE="latest"
 ARG PYINCORE_VIZ="latest"
 ARG PYINCORE_DATA="latest"
+ARG PYINCORE_INCUBATOR="latest"
 ARG INCORE="latest"
 
 # store versions installed as environment variables
@@ -27,6 +28,7 @@ ENV INCORE=$INCORE \
     PYINCORE=$PYINCORE \
     PYINCORE_VIZ=$PYINCORE_VIZ \
     PYINCORE_DATA=$PYINCORE_DATA \
+    PYINCORE_INCUBATOR=$PYINCORE_INCUBATOR \
     CHANNEL=$CHANNEL
 
 # Install Mamba from Conda-Forge
@@ -42,7 +44,8 @@ RUN umask 0 && \
   mamba install -c ${CHANNEL} -c in-core/label/rc -y \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
-     pyincore-data=${PYINCORE_DATA} && \
+     pyincore-data=${PYINCORE_DATA} \
+    pyincore-incubator=${PYINCORE_INCUBATOR} && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs -d '\n' -n 100 chmod a+w && \

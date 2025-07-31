@@ -46,11 +46,15 @@ jobs:
           PYINCORE_VERSION=$(cat lab/config.yml | grep "PyIncore" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
           PYINCORE_VIZ_VERSION=$(cat lab/config.yml | grep "PyIncore-Viz" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
           PYINCORE_DATA_VERSION=$(cat lab/config.yml | grep "PyIncore-Data" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
+          PYINCORE_INCUBATOR_VERSION=$(cat lab/config.yml | grep "PyIncore-Incubator" | head -1 | awk -F: '{print $2}' | tr -d '"|[:space:]' | sed 's/-//g')
+
+
           echo "CHANNEL=${CHANNEL}" >> $GITHUB_ENV
           echo "INCORE_VERSION=${INCORE_VERSION}" >> $GITHUB_ENV  
           echo "PYINCORE_VERSION=${PYINCORE_VERSION}" >> $GITHUB_ENV
           echo "PYINCORE_VIZ_VERSION=${PYINCORE_VIZ_VERSION}" >> $GITHUB_ENV
           echo "PYINCORE_DATA_VERSION=${PYINCORE_DATA_VERSION}" >> $GITHUB_ENV
+          echo "PYINCORE_INCUBATOR_VERSION=${PYINCORE_INCUBATOR_VERSION}" >> $GITHUB_ENV
 
       # calculate branch version information
       - name: version information
@@ -139,6 +143,7 @@ jobs:
           echo "PyIncore: ${{ env.PYINCORE_VERSION }}"
           echo "PyIncore-Viz: ${{ env.PYINCORE_VIZ_VERSION }}"
           echo "PyIncore-Data: ${{ env.PYINCORE_DATA_VERSION }}"
+          echo "PyIncore-Incubator: ${{ env.PYINCORE_INCUBATOR_VERSION }}"
 
       # setup docker build
       - name: Set up QEMU
@@ -195,6 +200,7 @@ jobs:
             PYINCORE=${{ env.PYINCORE_VERSION }}
             PYINCORE_VIZ=${{ env.PYINCORE_VIZ_VERSION }}
             PYINCORE_DATA=${{ env.PYINCORE_DATA_VERSION }}
+            PYINCORE_INCUBATOR=${{ env.PYINCORE_INCUBATOR_VERSION }}
             CHANNEL=${{ env.CHANNEL }}
 
       # update README at DockerHub

@@ -23,6 +23,12 @@ ARG PYINCORE_DATA="latest"
 ARG PYINCORE_INCUBATOR="latest"
 ARG INCORE="latest"
 
+# Minimum versions patched for Broccoli2Shell (CVE-2026-111497), an out-of-bounds write in the Brotli decoder
+ARG BROTLI="1.2.1"
+ARG NODEJS="22.23.4"
+# pinning nodejs makes the solve pull in sqlite 3.32.3, which overwrites libsqlite3.so.0 and breaks sqlite3, GDAL and node
+ARG SQLITE="3.50"
+
 # store versions installed as environment variables
 ENV INCORE=$INCORE \
     PYINCORE=$PYINCORE \
@@ -45,7 +51,10 @@ RUN umask 0 && \
      pyincore=${PYINCORE} \
      pyincore-viz=${PYINCORE_VIZ} \
      pyincore-data=${PYINCORE_DATA} \
-     pyincore-incubator=${PYINCORE_INCUBATOR} && \
+     pyincore-incubator=${PYINCORE_INCUBATOR} \
+     "brotli-python>=${BROTLI}" \
+     "nodejs>=${NODEJS}" \
+     "sqlite>=${SQLITE}" && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs -d '\n' -n 100 chmod a+w && \

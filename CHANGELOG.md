@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Jupyter AI 3.2 with the Jupyternaut persona, and JupyterLab 4.6 and Notebook 7.6 which it requires [#153](https://github.com/IN-CORE/incore-lab/issues/153)
+
+### Fixed
+- Pinned sqlite to 3.50 or newer so an old sqlite package cannot overwrite libsqlite and break sqlite3, GDAL and Node.js [#153](https://github.com/IN-CORE/incore-lab/issues/153)
+- Pinned litellm below 1.103 since newer versions need mcp 2.x and break Jupyternaut replies [#153](https://github.com/IN-CORE/incore-lab/issues/153)
+
 ## [1.12.1] - 2025-07-31
 - Fixed Dockerfile's indentation for IN-CORE release 6.1.0 [#147](https://github.com/IN-CORE/incore-lab/issues/147)
 

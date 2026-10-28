@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Jupyter AI 3.2 with the Jupyternaut persona, and JupyterLab 4.6 and Notebook 7.6 which it requires [#153](https://github.com/IN-CORE/incore-lab/issues/153)
+- Node.js 22 or newer and the Claude and OpenCode agent adapters for the Jupyter AI agent personas [#155](https://github.com/IN-CORE/incore-lab/issues/155)
 
 ### Fixed
 - Pinned sqlite to 3.50 or newer so an old sqlite package cannot overwrite libsqlite and break sqlite3, GDAL and Node.js [#153](https://github.com/IN-CORE/incore-lab/issues/153)

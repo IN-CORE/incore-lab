@@ -28,6 +28,10 @@ ARG JUPYTERLAB="4.6"
 ARG NOTEBOOK="7.6"
 ARG JUPYTER_AI="3.2"
 
+# Jupyter AI agent personas (@Claude and @OpenCode), these need Node.js >= 22
+ARG NODEJS="22"
+ARG AGENTS="@agentclientprotocol/claude-agent-acp opencode-ai@1"
+
 # store versions installed as environment variables
 ENV INCORE=$INCORE \
     PYINCORE=$PYINCORE \
@@ -53,6 +57,7 @@ RUN umask 0 && \
      pyincore-incubator=${PYINCORE_INCUBATOR} \
      jupyterlab=${JUPYTERLAB} \
      notebook=${NOTEBOOK} \
+     "nodejs>=${NODEJS}" \
      "sqlite>=3.50" && \
   mamba clean --yes --all --force-pkgs-dirs && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
@@ -76,3 +81,13 @@ RUN umask 0 && \
   find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
   comm -13 /tmp/oldfiles /tmp/newfiles | xargs -r -d '\n' -n 100 chmod a+w && \
   rm -f /tmp/oldfiles /tmp/newfiles /tmp/constraints.txt
+
+# Install the ACP adapters for the agent personas into the conda node prefix,
+# users log in to each agent from a Lab terminal (e.g. claude /login)
+RUN umask 0 && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/oldfiles && \
+  npm install -g --no-fund --no-audit ${AGENTS} && \
+  npm cache clean --force && \
+  find /opt/conda ! -perm -o=w -print | sort > /tmp/newfiles && \
+  comm -13 /tmp/oldfiles /tmp/newfiles | xargs -r -d '\n' -n 100 chmod a+w && \
+  rm -f /tmp/oldfiles /tmp/newfiles

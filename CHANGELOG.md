@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Security
+- Lab image pins `brotli-python>=1.2.1` and `nodejs>=22.23.4` for Broccoli2Shell (CVE-2026-111497) [#156](https://github.com/IN-CORE/incore-lab/issues/156)
+
 ## [1.12.1] - 2025-07-31
 - Fixed Dockerfile's indentation for IN-CORE release 6.1.0 [#147](https://github.com/IN-CORE/incore-lab/issues/147)
 

@@ -1,12 +1,13 @@
 import os
 import urllib.parse
+import urllib.request
 import json
 
 from jose import jwt
 from jose.exceptions import JWTError, ExpiredSignatureError, JWTClaimsError
 from jupyterhub.auth import Authenticator
 from jupyterhub.handlers import LoginHandler, LogoutHandler
-from traitlets import Unicode
+from traitlets import Unicode, default
 from tornado import web
 import requests
 
@@ -72,6 +73,12 @@ class CustomTokenAuthenticator(Authenticator):
 
     quotas = None
 
+    @default("allow_all")
+    def _allow_all_default(self):
+        # JupyterHub 5 denies everyone unless some allow config is set. The group
+        # and role check happens in check_jwt_token, so allow every user it accepts.
+        return True
+
     def get_handlers(self, app):
         return [
             (r"/", LoginHandler),
@@ -89,7 +96,7 @@ class CustomTokenAuthenticator(Authenticator):
 
         # fetch the key
         response = urllib.request.urlopen(self.keycloak_url)
-        if response.code >= 200 or response <= 299:
+        if 200 <= response.code <= 299:
             encoding = response.info().get_content_charset("utf-8")
             result = json.loads(response.read().decode(encoding))
             self.keycloak_pem_key = (
@@ -282,9 +289,13 @@ class CustomTokenLogoutHandler(LogoutHandler):
     async def handle_logout(self):
         # remove incore token on logout
         self.log.info("Remove incore token on logout")
+        self.set_cookie(self.authenticator.auth_cookie_header, "")
+
+    async def render_logout_page(self):
+        # send the user back to the landing page instead of the hub logout page,
+        # redirecting in handle_logout finished the response twice
         error_msg = (
             "You have logged out of IN-CORE system from IN-CORE lab. Please login again if you want to use "
             "IN-CORE components."
         )
-        self.set_cookie(self.authenticator.auth_cookie_header, "")
         self.redirect(f"{self.authenticator.landing_page_login_url}?error={error_msg}")

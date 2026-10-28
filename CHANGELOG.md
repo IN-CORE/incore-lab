@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Hub image is based on Z2JH k8s-hub 4.4.4 with JupyterHub 5.5 [#154](https://github.com/IN-CORE/incore-lab/issues/154)
+- Custom authenticator allows every user it accepts by default, since JupyterHub 5 denies everyone without allow config [#154](https://github.com/IN-CORE/incore-lab/issues/154)
+
+### Fixed
+- Logout no longer logs a "finish() called twice" error [#154](https://github.com/IN-CORE/incore-lab/issues/154)
+- Authenticator imports urllib.request and checks the Keycloak response status correctly [#154](https://github.com/IN-CORE/incore-lab/issues/154)
+
 ## [1.12.1] - 2025-07-31
 - Fixed Dockerfile's indentation for IN-CORE release 6.1.0 [#147](https://github.com/IN-CORE/incore-lab/issues/147)
 

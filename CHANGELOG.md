@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Pyincore 1.23.0, pyincore-viz 1.13.0 and pyincore-data 1.1.0 for IN-CORE release 6.4.0 [#161](https://github.com/IN-CORE/incore-lab/issues/161)
+
 ## [1.12.1] - 2025-07-31
 - Fixed Dockerfile's indentation for IN-CORE release 6.1.0 [#147](https://github.com/IN-CORE/incore-lab/issues/147)
 
